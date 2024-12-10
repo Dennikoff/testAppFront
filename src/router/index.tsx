@@ -4,8 +4,8 @@ import Home from "../pages/Home";
 import Login from "../pages/Login/Login";
 import AuthGuard from "./AuthGuard";
 
-export const publicRouteNames = [
-	'login'
+export const publicRoutePaths = [
+	'/login'
 ]
 
 const router = createBrowserRouter([

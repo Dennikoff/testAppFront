@@ -1,7 +1,26 @@
-import React from 'react'
+import React, { useEffect } from "react";
 
 export default function Login() {
-	return (
-		<div>Login</div>
-	)
+  console.log("render");
+  return (
+    <>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+      <div>Login</div>
+    </>
+  );
 }
