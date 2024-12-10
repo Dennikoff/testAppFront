@@ -1,27 +1,35 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../shared/Layout";
 import Home from "../pages/Home";
+import Login from "../pages/Login/Login";
+import AuthGuard from "./AuthGuard";
+
+export const publicRouteNames = [
+	'login'
+]
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <Layout/>,
+		element: (
+			<AuthGuard>
+				<Layout />
+			</AuthGuard>
+		),
 		children: [
 			{
 				path: '',
-				element: <Home/>
+				id: "home",
+				element: <Home />
 			},
 			{
 				path: '/login',
-				element: <Home/>
+				id: "login",
+				element: <Login />
 			},
 		]
 	}
 ])
-
-const publicRoutes = [
-	'login'
-]
 
 
 export default router;

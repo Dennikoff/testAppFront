@@ -1,7 +1,11 @@
+import { Link } from "react-router-dom";
 
 
 export default function Navigation() {
 	return (
-		<div>Navigation</div>
+		<>
+			<Link to={'/login'}>login</Link>
+			<Link to={'/home'}>home</Link>
+		</>
 	)
 }
