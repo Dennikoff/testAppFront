@@ -1,0 +1,24 @@
+#navigation {
+  width: 100%;
+  background-color: var(--color-dark);
+  padding: 1rem 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.navigationList {
+  display: flex;
+}
+
+.linksIconContainer {
+	display: flex;
+	align-items: center;
+	gap: 7rem;
+}
+
+.linksContainer {
+	display: flex;
+	gap: 2rem;
+}
+

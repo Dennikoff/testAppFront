@@ -5,24 +5,24 @@ import { publicRoutePaths } from ".";
 export default function AuthGuard({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
-  
-	const getAuthInfo = ():string => {
-    return localStorage["jwt"]
+
+  const getAuthInfo = (): string => {
+    return localStorage["jwt"];
   };
 
   useEffect(() => {
     const isPublicRoute = publicRoutePaths.includes(location.pathname);
 
-    if(getAuthInfo()) {
-			if (isPublicRoute) {
-				console.log("here");
-				navigate("/");
-			}
-		} else {
-			if (!isPublicRoute) {
-				navigate("/login");
-			}
-		}
+    if (getAuthInfo()) {
+      if (isPublicRoute) {
+        console.log("here");
+        navigate("/");
+      }
+    } else {
+      if (!isPublicRoute) {
+        navigate("/login");
+      }
+    }
   }, [navigate, location.pathname]);
 
   return <>{children}</>;
