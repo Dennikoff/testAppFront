@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import Home from "../pages/Home";
 import Login from "../pages/Login/Login";
 import AuthGuard from "./AuthGuard";
+import About from "@/pages/About";
 
 export const publicRoutePaths = [
 	'/login'
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
 				path: '/login',
 				id: "login",
 				element: <Login />
+			},
+			{
+				path: '/registration-acc',
+				id: "about",
+				element: <About />
 			},
 		]
 	}

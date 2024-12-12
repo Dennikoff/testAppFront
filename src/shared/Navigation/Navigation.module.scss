@@ -22,3 +22,20 @@
 	gap: 2rem;
 }
 
+
+.navLink {
+	font-size: 1.25rem;
+	font-weight: 700;
+
+	&:hover {
+		color: unset;
+		text-decoration: underline 2px; 
+	}
+}
+
+.active {
+	color: var(--color-active);
+	&:hover {
+		color: var(--color-active);
+	}
+}

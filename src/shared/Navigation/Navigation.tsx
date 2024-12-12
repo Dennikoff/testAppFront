@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import img from "@/static/assets/logo.png";
 
 import styles from "./Navigation.module.scss";
@@ -27,21 +27,21 @@ export default function Navigation() {
 
   const navigationOnPublicPage = (
     <>
-      <Link to={{ pathname: "/login" }}>
+      <NavLink to={{ pathname: "/login" }}>
         <img src={img} width={50} height={50} />
-      </Link>
+      </NavLink>
     </>
   );
 
   const navigationOnPrivatePage = (
     <>
       <div className={styles.linksIconContainer}>
-        <Link to={{ pathname: "/login" }}>
+        <NavLink to={{ pathname: "/" }}>
           <img src={img} width={50} height={50} />
-        </Link>
+        </NavLink>
         <ul className={styles.linksContainer}>
           {linkList.map((link) => {
-            return <li><Link to={link.path}>{link.label}</Link></li>
+            return <li key={link.path}><NavLink className={({ isActive }) => `${isActive ? (styles.active + ' ') : '' }${styles.navLink}`} to={link.path}>{link.label}</NavLink></li>
           })}
         </ul>
       </div>
