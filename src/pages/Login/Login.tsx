@@ -1,7 +1,6 @@
 import { FormEvent, useCallback } from "react";
 import styles from "./Login.module.scss";
 import Steve from "@/static/assets/steve.png";
-import {InputText} from 'primereact';
 export default function Login() {
   const formSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
@@ -13,7 +12,6 @@ export default function Login() {
       <div className={styles.formContainer}>
         <h1 className={styles.loginHeader}>Форма авторизации</h1>
         <form onSubmit={formSubmit}>
-          <InputText/>
         </form>
         <img className={styles.steve} src={Steve}  />
         
