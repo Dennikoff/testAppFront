@@ -3,7 +3,7 @@ import Layout from "./Layout";
 import Home from "../pages/Home";
 import Login from "../pages/Login/Login";
 import AuthGuard from "./AuthGuard";
-import AcountRegistration from "@/pages/AccountRegistration";
+import AcountRegistration from "@/pages/AccountRegistration/AccountRegistration";
 
 export const publicRoutePaths = [
 	'/login'

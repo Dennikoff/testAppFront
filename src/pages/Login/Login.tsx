@@ -50,7 +50,7 @@ export default function Login() {
               />
               <label htmlFor="password">Пароль</label>
             </FloatLabel>
-            <Button type="submit" className={styles.button} label="Войти" />
+            <Button type="submit" severity="secondary" className={styles.button} label="Войти" />
           </form>
         </div>
         <img className={styles.steve} src={Steve} />

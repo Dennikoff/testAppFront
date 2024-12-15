@@ -1,0 +1,23 @@
+.headerContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.headerButton {
+	width: 300px;
+}
+
+.filerContainer {
+	margin-top: 5rem;
+	display: flex;
+	gap: 2rem;
+}
+
+.searchField {
+	width: 500px;
+}
+
+.dropdownField {
+	width: 260px;
+}

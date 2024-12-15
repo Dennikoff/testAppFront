@@ -36,3 +36,10 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.page-wrapper {
+  margin: 2rem;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  background-color: var(--color-container);
+}

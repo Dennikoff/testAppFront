@@ -10,6 +10,14 @@
 	background-color: var(--color-light);
 }
 
+.p-dropdown {
+	background-color: var(--color-light);
+	width: 100%;
+	.p-inputtext {
+		padding: 18px 16px;
+	}
+}
+
 .p-password {
 	width: 100%;
 	font-weight: 600;
@@ -34,8 +42,8 @@
 }
 
 .p-button {
-	color: var(--color-dark);
-	background-color: var(--color-light);
+	color: var(--color-light);
+	background-color: var(--color-main);
 	border: 0;
 }
 
@@ -46,4 +54,10 @@
 	&:hover {
 		background-color: var(--color-button-outlined-hover);
 	}
+}
+
+.p-button-secondary {
+	color: var(--color-main);
+	background-color: var(--color-light);
+	border: 0;
 }
