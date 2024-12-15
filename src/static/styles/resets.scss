@@ -2,8 +2,19 @@ ul {
     list-style: none;
 }
 
-body, div, section, nav, ul, li, h1, h2, h3, h4, h5, h6, p, span, * {
+body, div, section, nav, ul, h1, h2, h3, h4, h5, h6, p {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 2rem;
+
+}
+

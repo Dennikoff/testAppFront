@@ -1,0 +1,49 @@
+.p-float-label {
+	width: 100%;
+}
+
+.p-inputtext {
+	width: 100%;
+	padding: 24px 16px 12px;
+	font-weight: 600;
+	color: var(--color-black-text);
+	background-color: var(--color-light);
+}
+
+.p-password {
+	width: 100%;
+	font-weight: 600;
+	.p-icon-field {
+		width: 100%;
+		& > .p-input-icon:last-of-type {
+			top: 21px;
+		}
+	}
+}
+
+.p-float-label:has(input:focus) label,
+.p-float-label:has(input.p-filled) label,
+.p-float-label:has(input:-webkit-autofill) label,
+.p-float-label:has(textarea:focus) label,
+.p-float-label:has(textarea.p-filled) label,
+.p-float-label:has(.p-inputwrapper-focus) label,
+.p-float-label:has(.p-inputwrapper-filled) label {
+	top: 1rem;
+	left: 16px;
+	font-size: 12px;
+}
+
+.p-button {
+	color: var(--color-dark);
+	background-color: var(--color-light);
+	border: 0;
+}
+
+.p-button-outlined {
+	border: 1px solid var(--color-main);
+	color: var(--color-main);
+	background: none;
+	&:hover {
+		background-color: var(--color-button-outlined-hover);
+	}
+}

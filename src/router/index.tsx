@@ -3,7 +3,7 @@ import Layout from "./Layout";
 import Home from "../pages/Home";
 import Login from "../pages/Login/Login";
 import AuthGuard from "./AuthGuard";
-import About from "@/pages/About";
+import AcountRegistration from "@/pages/AccountRegistration";
 
 export const publicRoutePaths = [
 	'/login'
@@ -30,8 +30,8 @@ const router = createBrowserRouter([
 			},
 			{
 				path: '/registration-acc',
-				id: "about",
-				element: <About />
+				id: "account-registration",
+				element: <AcountRegistration />
 			},
 		]
 	}

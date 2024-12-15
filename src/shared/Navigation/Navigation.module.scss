@@ -1,6 +1,7 @@
 #navigation {
   width: 100%;
   background-color: var(--color-dark);
+	color: var(--color-light);
   padding: 1rem 2rem;
 	display: flex;
 	align-items: center;
@@ -38,4 +39,32 @@
 	&:hover {
 		color: var(--color-active);
 	}
+}
+
+.userMenu {
+	display: flex;
+	gap: .5rem;
+	align-items: center;
+	cursor: pointer;
+	
+	i {
+		transition: color .1s linear;
+	}
+
+	.avatar {
+		transition: background-color .1s linear;
+	}
+	
+	&:hover {
+		i {
+			color: var(--color-light);
+		}
+		.avatar {
+			background-color: var(--color-light);
+		}
+	}
+}
+
+.avatar {
+	color: var(--color-main);
 }
