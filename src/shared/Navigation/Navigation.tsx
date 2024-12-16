@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import img from "@/static/assets/logo.png";
 
 import styles from "./Navigation.module.scss";

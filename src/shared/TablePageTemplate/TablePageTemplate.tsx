@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import styles from "./TablePageTemplate.module.scss";
 import { Button } from "primereact/button";
 import { FloatLabel } from "primereact/floatlabel";
@@ -12,7 +12,7 @@ interface TablePageTemplateProps {
   searchValue: string;
   onSearchChange: (value: string) => void;
   searchOptionList: SearchOption[];
-	searchOption: SearchOption | null;
+  searchOption: SearchOption | null;
   setSearchOption: (value: SearchOption) => void;
 }
 
@@ -28,12 +28,11 @@ export const TablePageTemplate = ({
   searchValue,
   onSearchChange,
   searchOptionList,
-	searchOption,
-	setSearchOption,
+  searchOption,
+  setSearchOption,
 }: TablePageTemplateProps) => {
-
   return (
-    <div className="page-wrapper">
+    <div className={`page-wrapper ${styles.tablePageWrapper}`}>
       <div className={styles.headerContainer}>
         <h1>{header}</h1>
         {headerButton && (
@@ -65,7 +64,7 @@ export const TablePageTemplate = ({
           />
         </div>
       </div>
-      {children}
+      <div className={styles.tableWrapper}>{children}</div>
     </div>
   );
 };

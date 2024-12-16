@@ -45,6 +45,9 @@
 	color: var(--color-light);
 	background-color: var(--color-main);
 	border: 0;
+	&:hover {
+		background-color: var(--color-dark);
+	}
 }
 
 .p-button-outlined {
