@@ -7,124 +7,121 @@ import { useCallback, useRef, useState } from "react";
 import styles from "./AccountRegistration.module.scss";
 import { Menu } from "primereact/menu";
 import { confirmDialog } from "primereact/confirmdialog";
+import AccountDialog from "./components/AccountDialog/AccountDialog";
+import { Account, AccountDialogState } from "./types";
 
 const accList: Account[] = [
   {
     id: 1,
     login: "User1",
     name: "Alexander",
-    role: "Тестировщик",
+    role: "tester",
   },
   {
     id: 2,
     login: "User2",
     name: "Alexander",
-    role: "Тестировщик",
+    role: "tester",
   },
   {
     id: 3,
     login: "User3",
     name: "Alexander",
-    role: "Тест-аналитик",
+    role: "testAnalyst",
   },
   {
     id: 4,
     login: "User4",
     name: "Alexander",
-    role: "Тест-аналитик",
+    role: "testAnalyst",
   },
   {
     id: 5,
     login: "User5",
     name: "Alexander",
-    role: "Тестировщик",
+    role: "tester",
   },
   {
     id: 6,
     login: "User6",
     name: "Alexander",
-    role: "Администратор",
+    role: "administrator",
   },
   {
     id: 7,
     login: "User1",
     name: "Alexander",
-    role: "Тестировщик",
+    role: "tester",
   },
   {
     id: 8,
     login: "User2",
     name: "Alexander",
-    role: "Тестировщик",
+    role: "tester",
   },
   {
     id: 9,
     login: "User3",
     name: "Alexander",
-    role: "Тест-аналитик",
+    role: "testAnalyst",
   },
   {
     id: 10,
     login: "User4",
     name: "Alexander",
-    role: "Тест-аналитик",
+    role: "testAnalyst",
   },
   {
     id: 11,
     login: "User5",
     name: "Alexander",
-    role: "Тестировщик",
+    role: "tester",
   },
   {
     id: 12,
     login: "User6",
     name: "Alexander",
-    role: "Администратор",
+    role: "administrator",
   },
   {
     id: 13,
     login: "User4",
     name: "Alexander",
-    role: "Тест-аналитик",
+    role: "testAnalyst",
   },
   {
     id: 14,
     login: "User5",
     name: "Alexander",
-    role: "Тестировщик",
+    role: "tester",
   },
   {
     id: 15,
     login: "User6",
     name: "Alexander",
-    role: "Администратор",
+    role: "administrator",
   },
   {
     id: 16,
     login: "User4",
     name: "Alexander",
-    role: "Тест-аналитик",
+    role: "testAnalyst",
   },
   {
     id: 17,
     login: "User5",
     name: "Alexander",
-    role: "Тестировщик",
+    role: "tester",
   },
   {
     id: 18,
     login: "User6",
     name: "Alexander",
-    role: "Администратор",
+    role: "administrator",
   },
 ];
 
-interface Account {
-  id: number;
-  login: string;
-  name: string;
-  role: string;
-}
+
 
 export default function AccountRegistration() {
   const [search, setSearch] = useState<string>("");
@@ -143,11 +140,13 @@ export default function AccountRegistration() {
     },
   ];
 
-  let activeAccount: Account | null = null;
+  const [activeAccount, setActiveAccount] = useState<Account>();
 
   const [searchOption, setSearchOption] = useState<SearchOption | null>(null);
 
   const [accountList, setAccountList] = useState<Account[]>(accList);
+
+  const [dialogState, setDialogState] = useState<AccountDialogState>({ visible: false, state: "create" });
 
   const menu = useRef<Menu>(null);
 
@@ -163,7 +162,9 @@ export default function AccountRegistration() {
         confirmDialog({
           message: (
             <span>
-              Вы действительно хотите удалить запись c <br/><b>Login: {activeAccount?.login}</b>
+              Вы действительно хотите удалить запись:
+              <br />
+              <b>Login: {activeAccount?.login}</b>
             </span>
           ),
           header: "Подтверждение удаления",
@@ -178,7 +179,7 @@ export default function AccountRegistration() {
       label: "Редактировать",
       icon: "pi pi-pencil",
       command: () => {
-        console.log("edit");
+        setDialogState({visible: true, state: 'edit'});
       },
     },
   ];
@@ -189,7 +190,10 @@ export default function AccountRegistration() {
       setSearchOption={setSearchOption}
       searchOptionList={searchOptionList}
       header="Регистрация УЗ"
-      headerButton={{ label: "Создание УЗ", action: (e) => console.log(e) }}
+      headerButton={{
+        label: "Создание УЗ",
+        action: () => setDialogState({visible: true, state: 'create'}),
+      }}
       searchValue={search}
       onSearchChange={setSearch}
     >
@@ -211,7 +215,7 @@ export default function AccountRegistration() {
           body={(data) => (
             <i
               onClick={(event) => {
-                activeAccount = data;
+                setActiveAccount(data);
                 menu.current?.toggle(event);
               }}
               className={`pi pi-ellipsis-v ${styles.actionButton}`}
@@ -220,6 +224,7 @@ export default function AccountRegistration() {
         ></Column>
       </DataTable>
       <Menu model={items} popup ref={menu} />
+      <AccountDialog account={activeAccount} dialogState={dialogState} setDialogState={setDialogState}/>
     </TablePageTemplate>
   );
 }

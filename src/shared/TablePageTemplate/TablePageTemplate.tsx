@@ -7,7 +7,7 @@ import { Dropdown } from "primereact/dropdown";
 
 interface TablePageTemplateProps {
   header: string;
-  headerButton?: { label: string; action: (e: MouseEvent) => void };
+  headerButton?: { label: string; action: () => void };
   children: ReactNode;
   searchValue: string;
   onSearchChange: (value: string) => void;
@@ -39,6 +39,7 @@ export const TablePageTemplate = ({
           <Button
             label={headerButton.label}
             className={styles.headerButton}
+            onClick={headerButton.action}
             icon="pi pi-plus"
             iconPos="right"
           />
