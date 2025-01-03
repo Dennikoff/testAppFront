@@ -17,6 +17,7 @@ interface Props {
   dialogState: AccountDialogState;
   account?: Account;
   setDialogState: (newValue: AccountDialogState) => void;
+  onDelete: () => void;
 }
 
 interface RoleOption {
@@ -28,6 +29,7 @@ export default function AccountDialog({
   dialogState,
   setDialogState,
   account,
+  onDelete,
 }: Props) {
   const [accountForm, setAccountForm] = useState<AccountForm>(
     dialogState.state === "edit" && account
@@ -80,7 +82,7 @@ export default function AccountDialog({
       <>
         {dialogState.state === "edit" ? (
           <>
-            <Button outlined severity="danger" label="Удалить" type="reset" />
+            <Button outlined severity="danger" label="Удалить" type="reset" onClick={onDelete}/>
             <Button label="Изменить" type="submit" />
           </>
         ) : (

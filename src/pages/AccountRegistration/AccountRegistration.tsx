@@ -3,7 +3,7 @@ import TablePageTemplate, {
 } from "@/shared/TablePageTemplate/TablePageTemplate";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { useCallback, useRef, useState } from "react";
+import { MouseEvent, useCallback, useRef, useState } from "react";
 import styles from "./AccountRegistration.module.scss";
 import { Menu } from "primereact/menu";
 import { confirmDialog } from "primereact/confirmdialog";
@@ -121,8 +121,6 @@ const accList: Account[] = [
   },
 ];
 
-
-
 export default function AccountRegistration() {
   const [search, setSearch] = useState<string>("");
   const searchOptionList: SearchOption[] = [
@@ -146,12 +144,16 @@ export default function AccountRegistration() {
 
   const [accountList, setAccountList] = useState<Account[]>(accList);
 
-  const [dialogState, setDialogState] = useState<AccountDialogState>({ visible: false, state: "create" });
+  const [dialogState, setDialogState] = useState<AccountDialogState>({
+    visible: false,
+    state: "create",
+  });
 
   const menu = useRef<Menu>(null);
 
   const deleteItem = useCallback(() => {
     setAccountList(accountList.filter((val) => val.id !== activeAccount?.id));
+    setDialogState({ visible: false, state: "create" })
   }, [activeAccount, accountList]);
 
   const items = [
@@ -179,7 +181,7 @@ export default function AccountRegistration() {
       label: "Редактировать",
       icon: "pi pi-pencil",
       command: () => {
-        setDialogState({visible: true, state: 'edit'});
+        setDialogState({ visible: true, state: "edit" });
       },
     },
   ];
@@ -192,7 +194,7 @@ export default function AccountRegistration() {
       header="Регистрация УЗ"
       headerButton={{
         label: "Создание УЗ",
-        action: () => setDialogState({visible: true, state: 'create'}),
+        action: () => setDialogState({ visible: true, state: "create" }),
       }}
       searchValue={search}
       onSearchChange={setSearch}
@@ -224,7 +226,27 @@ export default function AccountRegistration() {
         ></Column>
       </DataTable>
       <Menu model={items} popup ref={menu} />
-      <AccountDialog account={activeAccount} dialogState={dialogState} setDialogState={setDialogState}/>
+      <AccountDialog
+        account={activeAccount}
+        dialogState={dialogState}
+        setDialogState={setDialogState}
+        onDelete={() => {
+          confirmDialog({
+            message: (
+              <span>
+                Вы действительно хотите удалить запись:
+                <br />
+                <b>Login: {activeAccount?.login}</b>
+              </span>
+            ),
+            header: "Подтверждение удаления",
+            icon: "pi pi-info-circle",
+            defaultFocus: "reject",
+            acceptClassName: "p-button-danger",
+            accept: deleteItem,
+          });
+        }}
+      />
     </TablePageTemplate>
   );
 }
