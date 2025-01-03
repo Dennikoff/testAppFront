@@ -32,7 +32,7 @@ export const TablePageTemplate = ({
   setSearchOption,
 }: TablePageTemplateProps) => {
   return (
-    <div className={`page-wrapper ${styles.tablePageWrapper}`}>
+    <div className={`page-container ${styles.tablePageWrapper}`}>
       <div className={styles.headerContainer}>
         <h1>{header}</h1>
         {headerButton && (

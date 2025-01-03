@@ -153,7 +153,7 @@ export default function AccountRegistration() {
 
   const deleteItem = useCallback(() => {
     setAccountList(accountList.filter((val) => val.id !== activeAccount?.id));
-    setDialogState({ visible: false, state: "create" })
+    setDialogState({ visible: false, state: "create" });
   }, [activeAccount, accountList]);
 
   const items = [
@@ -187,66 +187,68 @@ export default function AccountRegistration() {
   ];
 
   return (
-    <TablePageTemplate
-      searchOption={searchOption}
-      setSearchOption={setSearchOption}
-      searchOptionList={searchOptionList}
-      header="Регистрация УЗ"
-      headerButton={{
-        label: "Создание УЗ",
-        action: () => setDialogState({ visible: true, state: "create" }),
-      }}
-      searchValue={search}
-      onSearchChange={setSearch}
-    >
-      <DataTable
-        paginator
-        rows={15}
-        scrollable
-        scrollHeight="100%"
-        value={accountList}
-        className={styles.table}
-      >
-        <Column align="center" field="id" header="ID"></Column>
-        <Column align="center" field="login" header="Логин"></Column>
-        <Column align="center" field="name" header="Имя"></Column>
-        <Column align="center" field="role" header="Роль"></Column>
-        <Column
-          align="center"
-          header="Действия"
-          body={(data) => (
-            <i
-              onClick={(event) => {
-                setActiveAccount(data);
-                menu.current?.toggle(event);
-              }}
-              className={`pi pi-ellipsis-v ${styles.actionButton}`}
-            ></i>
-          )}
-        ></Column>
-      </DataTable>
-      <Menu model={items} popup ref={menu} />
-      <AccountDialog
-        account={activeAccount}
-        dialogState={dialogState}
-        setDialogState={setDialogState}
-        onDelete={() => {
-          confirmDialog({
-            message: (
-              <span>
-                Вы действительно хотите удалить запись:
-                <br />
-                <b>Login: {activeAccount?.login}</b>
-              </span>
-            ),
-            header: "Подтверждение удаления",
-            icon: "pi pi-info-circle",
-            defaultFocus: "reject",
-            acceptClassName: "p-button-danger",
-            accept: deleteItem,
-          });
+    <div className="page-wrapper" style={{flexGrow: 1, overflow: 'hidden'}}>
+      <TablePageTemplate
+        searchOption={searchOption}
+        setSearchOption={setSearchOption}
+        searchOptionList={searchOptionList}
+        header="Регистрация УЗ"
+        headerButton={{
+          label: "Создание УЗ",
+          action: () => setDialogState({ visible: true, state: "create" }),
         }}
-      />
-    </TablePageTemplate>
+        searchValue={search}
+        onSearchChange={setSearch}
+      >
+        <DataTable
+          paginator
+          rows={15}
+          scrollable
+          scrollHeight="100%"
+          value={accountList}
+          className={styles.table}
+        >
+          <Column align="center" field="id" header="ID"></Column>
+          <Column align="center" field="login" header="Логин"></Column>
+          <Column align="center" field="name" header="Имя"></Column>
+          <Column align="center" field="role" header="Роль"></Column>
+          <Column
+            align="center"
+            header="Действия"
+            body={(data) => (
+              <i
+                onClick={(event) => {
+                  setActiveAccount(data);
+                  menu.current?.toggle(event);
+                }}
+                className={`pi pi-ellipsis-v ${styles.actionButton}`}
+              ></i>
+            )}
+          ></Column>
+        </DataTable>
+        <Menu model={items} popup ref={menu} />
+        <AccountDialog
+          account={activeAccount}
+          dialogState={dialogState}
+          setDialogState={setDialogState}
+          onDelete={() => {
+            confirmDialog({
+              message: (
+                <span>
+                  Вы действительно хотите удалить запись:
+                  <br />
+                  <b>Login: {activeAccount?.login}</b>
+                </span>
+              ),
+              header: "Подтверждение удаления",
+              icon: "pi pi-info-circle",
+              defaultFocus: "reject",
+              acceptClassName: "p-button-danger",
+              accept: deleteItem,
+            });
+          }}
+        />
+      </TablePageTemplate>
+    </div>
   );
 }

@@ -32,7 +32,7 @@ export default function Navigation() {
       label: "Регистрация УЗ",
     },
     {
-      path: '/administation',
+      path: '/administration',
       label: "Администрирование",
     },
     {
