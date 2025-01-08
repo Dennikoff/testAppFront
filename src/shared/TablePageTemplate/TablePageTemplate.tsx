@@ -1,9 +1,10 @@
-import { ReactNode } from "react";
+import { ReactNode, RefObject } from "react";
 import styles from "./TablePageTemplate.module.scss";
 import { Button } from "primereact/button";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
+
 
 interface TablePageTemplateProps {
   header: string;
@@ -67,6 +68,7 @@ export const TablePageTemplate = ({
       </div>
       <div className={styles.tableWrapper}>{children}</div>
     </div>
+    
   );
 };
 

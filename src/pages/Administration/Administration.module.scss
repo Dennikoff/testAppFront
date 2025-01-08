@@ -1,4 +1,13 @@
 .administrationPage {
 	display: flex;
-	
+	gap: 1.5rem;
+	height: 100%;
+}
+
+.outlet {
+	flex-grow: 1;
+}
+
+.page {
+	height: 100%;
 }

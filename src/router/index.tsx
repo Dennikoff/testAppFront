@@ -6,6 +6,8 @@ import AuthGuard from "./AuthGuard";
 import AcountRegistration from "@/pages/AccountRegistration/AccountRegistration";
 import Administration from "@/pages/Administration/Administration";
 import Testing from "@/pages/Testing/Testing";
+import Control from "@/pages/Administration/components/Control/Control";
+import Logs from "@/pages/Administration/components/Logs/Logs";
 
 export const publicRoutePaths = [
 	'/login'
@@ -38,7 +40,19 @@ const router = createBrowserRouter([
 			{
 				path: '/administration',
 				id: "administration",
-				element: <Administration />
+				element: <Administration />,
+				children: [
+					{
+						path: 'asuz-control',
+						id: "administration.asuz-control",
+						element: <Control/>
+					},
+					{
+						path: 'logs',
+						id: "administration.logs",
+						element: <Logs/>
+					},
+				]
 			},
 			{
 				path: '/testing',

@@ -3,12 +3,15 @@ import TablePageTemplate, {
 } from "@/shared/TablePageTemplate/TablePageTemplate";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { MouseEvent, useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import styles from "./AccountRegistration.module.scss";
 import { Menu } from "primereact/menu";
 import { confirmDialog } from "primereact/confirmdialog";
-import AccountDialog from "./components/AccountDialog/AccountDialog";
-import { Account, AccountDialogState } from "./types";
+import UpdateDialog from "../../shared/UpdateDialog/UpdateDialog";
+import { Account, AccountDialogState, AccountForm } from "./types";
+import { FloatLabel } from "primereact/floatlabel";
+import { InputText } from "primereact/inputtext";
+import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 
 const accList: Account[] = [
   {
@@ -139,6 +142,10 @@ export default function AccountRegistration() {
   ];
 
   const [activeAccount, setActiveAccount] = useState<Account>();
+  const [accountForm, setActiveAccountForm] = useState<AccountForm>({
+    login: '',
+    name: '',
+  });
 
   const [searchOption, setSearchOption] = useState<SearchOption | null>(null);
 
@@ -155,6 +162,21 @@ export default function AccountRegistration() {
     setAccountList(accountList.filter((val) => val.id !== activeAccount?.id));
     setDialogState({ visible: false, state: "create" });
   }, [activeAccount, accountList]);
+
+  const roleOptions = [
+      {
+        label: "Тестировщик",
+        value: "tester",
+      },
+      {
+        label: "Тест-аналитик",
+        value: "testAnalyst",
+      },
+      {
+        label: "Администратор",
+        value: "administrator",
+      },
+    ];
 
   const items = [
     {
@@ -186,8 +208,10 @@ export default function AccountRegistration() {
     },
   ];
 
+  
+
   return (
-    <div className="page-wrapper" style={{flexGrow: 1, overflow: 'hidden'}}>
+    <div className="page-wrapper" style={{ flexGrow: 1, overflow: "hidden" }}>
       <TablePageTemplate
         searchOption={searchOption}
         setSearchOption={setSearchOption}
@@ -227,27 +251,43 @@ export default function AccountRegistration() {
           ></Column>
         </DataTable>
         <Menu model={items} popup ref={menu} />
-        <AccountDialog
+        <UpdateDialog
           account={activeAccount}
           dialogState={dialogState}
           setDialogState={setDialogState}
-          onDelete={() => {
-            confirmDialog({
-              message: (
-                <span>
-                  Вы действительно хотите удалить запись:
-                  <br />
-                  <b>Login: {activeAccount?.login}</b>
-                </span>
-              ),
-              header: "Подтверждение удаления",
-              icon: "pi pi-info-circle",
-              defaultFocus: "reject",
-              acceptClassName: "p-button-danger",
-              accept: deleteItem,
-            });
-          }}
-        />
+          onDelete={deleteItem}
+        >
+          <div className={styles.formFields}>
+            <FloatLabel>
+              <InputText
+                id="username"
+                value={accountForm.login}
+                onChange={(e) =>
+                  setActiveAccountForm({ ...accountForm, login: e.target.value })
+                }
+              />
+              <label htmlFor="username">Логин</label>
+            </FloatLabel>
+            <FloatLabel>
+              <InputText
+                id="name"
+                value={accountForm.name}
+                onChange={(e) =>
+                  setActiveAccountForm({ ...accountForm, name: e.target.value })
+                }
+              />
+              <label htmlFor="name">Имя</label>
+            </FloatLabel>
+            <Dropdown
+              value={accountForm.role}
+              onChange={(e: DropdownChangeEvent) =>
+                setActiveAccountForm({ ...accountForm, role: e.value })
+              }
+              options={roleOptions}
+              placeholder="Роль"
+            />
+          </div>
+        </UpdateDialog>
       </TablePageTemplate>
     </div>
   );

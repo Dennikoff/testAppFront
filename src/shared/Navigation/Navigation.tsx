@@ -14,33 +14,32 @@ export default function Navigation() {
   const menuRight = useRef<Menu>(null);
   const items = [
     {
-        label: 'Управление',
-        items: [
-            {
-                label: 'Выйти',
-                icon: 'pi pi-sign-out', 
-                url: '/login',
-                command: () => localStorage.removeItem('jwt'),
-            },
-        ]
-    }
-];
+      label: "Управление",
+      items: [
+        {
+          label: "Выйти",
+          icon: "pi pi-sign-out",
+          url: "/login",
+          command: () => localStorage.removeItem("jwt"),
+        },
+      ],
+    },
+  ];
 
   const linkList = [
     {
-      path: '/registration-acc',
+      path: "/registration-acc",
       label: "Регистрация УЗ",
     },
     {
-      path: '/administration',
+      path: "/administration",
       label: "Администрирование",
     },
     {
-      path: '/testing',
+      path: "/testing",
       label: "Тестирование",
     },
-  ]
-
+  ];
 
   const navigationOnPublicPage = (
     <>
@@ -62,7 +61,18 @@ export default function Navigation() {
         </NavLink>
         <ul className={styles.linksContainer}>
           {linkList.map((link) => {
-            return <li key={link.path}><NavLink className={({ isActive }) => `${isActive ? (styles.active + ' ') : '' }${styles.navLink}`} to={link.path}>{link.label}</NavLink></li>
+            return (
+              <li key={link.path}>
+                <NavLink
+                  className={({ isActive }) =>
+                    `${isActive ? styles.active + " " : ""}${styles.navLink}`
+                  }
+                  to={link.path}
+                >
+                  {link.label}
+                </NavLink>
+              </li>
+            );
           })}
         </ul>
       </div>
@@ -70,7 +80,13 @@ export default function Navigation() {
         <Avatar icon="pi pi-user" className={styles.avatar} shape="circle" />
         <i className="pi pi-angle-down"></i>
       </div>
-      <Menu model={items} popup ref={menuRight} id="popup_menu_right" popupAlignment="right" />
+      <Menu
+        model={items}
+        popup
+        ref={menuRight}
+        id="popup_menu_right"
+        popupAlignment="right"
+      />
     </>
   );
 

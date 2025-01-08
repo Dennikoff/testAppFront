@@ -1,35 +1,29 @@
 import { Dialog } from "primereact/dialog";
-import styles from "./AccountDialog.module.scss";
+import styles from "./UpdateDialog.module.scss";
 import {
   Account,
   AccountDialogState,
   AccountForm,
-  AccountRole,
-  AccountRoleLabels,
-} from "../../types";
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+} from "../../pages/AccountRegistration/types";
+import { FormEvent, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "primereact/button";
-import { FloatLabel } from "primereact/floatlabel";
-import { InputText } from "primereact/inputtext";
-import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 
 interface Props {
   dialogState: AccountDialogState;
   account?: Account;
   setDialogState: (newValue: AccountDialogState) => void;
   onDelete: () => void;
+  children: ReactNode;
 }
 
-interface RoleOption {
-  label: AccountRoleLabels;
-  value: AccountRole;
-}
+
 
 export default function AccountDialog({
   dialogState,
   setDialogState,
   account,
   onDelete,
+  children,
 }: Props) {
   const [accountForm, setAccountForm] = useState<AccountForm>(
     dialogState.state === "edit" && account
@@ -62,20 +56,7 @@ export default function AccountDialog({
     console.log(accountForm);
   }, [accountForm]);
 
-  const roleOptions: RoleOption[] = [
-    {
-      label: "Тестировщик",
-      value: "tester",
-    },
-    {
-      label: "Тест-аналитик",
-      value: "testAnalyst",
-    },
-    {
-      label: "Администратор",
-      value: "administrator",
-    },
-  ];
+  
 
   const formControls = useMemo(() => {
     return (
@@ -110,36 +91,7 @@ export default function AccountDialog({
       headerClassName={styles.dialogHeader}
     >
       <form className={styles.dialogForm} onSubmit={formSubmit}>
-        <div className={styles.formFields}>
-          <FloatLabel>
-            <InputText
-              id="username"
-              value={accountForm.login}
-              onChange={(e) =>
-                setAccountForm({ ...accountForm, login: e.target.value })
-              }
-            />
-            <label htmlFor="username">Логин</label>
-          </FloatLabel>
-          <FloatLabel>
-            <InputText
-              id="name"
-              value={accountForm.name}
-              onChange={(e) =>
-                setAccountForm({ ...accountForm, name: e.target.value })
-              }
-            />
-            <label htmlFor="name">Имя</label>
-          </FloatLabel>
-          <Dropdown
-            value={accountForm.role}
-            onChange={(e: DropdownChangeEvent) =>
-              setAccountForm({ ...accountForm, role: e.value })
-            }
-            options={roleOptions}
-            placeholder="Роль"
-          />
-        </div>
+        {children}
         <div className={styles.formControls}>{formControls}</div>
       </form>
     </Dialog>
