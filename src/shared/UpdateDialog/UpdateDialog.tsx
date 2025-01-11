@@ -53,8 +53,9 @@ export default function AccountDialog({
 
   const formSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
-    console.log(accountForm);
-  }, [accountForm]);
+
+    setDialogState({ ...dialogState, visible: false });
+  }, [dialogState]);
 
   
 

@@ -142,9 +142,9 @@ export default function AccountRegistration() {
   ];
 
   const [activeAccount, setActiveAccount] = useState<Account>();
-  const [accountForm, setActiveAccountForm] = useState<AccountForm>({
-    login: '',
-    name: '',
+  const [accountForm, setAccountForm] = useState<AccountForm>({
+    login: "",
+    name: "",
   });
 
   const [searchOption, setSearchOption] = useState<SearchOption | null>(null);
@@ -164,19 +164,19 @@ export default function AccountRegistration() {
   }, [activeAccount, accountList]);
 
   const roleOptions = [
-      {
-        label: "Тестировщик",
-        value: "tester",
-      },
-      {
-        label: "Тест-аналитик",
-        value: "testAnalyst",
-      },
-      {
-        label: "Администратор",
-        value: "administrator",
-      },
-    ];
+    {
+      label: "Тестировщик",
+      value: "tester",
+    },
+    {
+      label: "Тест-аналитик",
+      value: "testAnalyst",
+    },
+    {
+      label: "Администратор",
+      value: "administrator",
+    },
+  ];
 
   const items = [
     {
@@ -203,12 +203,11 @@ export default function AccountRegistration() {
       label: "Редактировать",
       icon: "pi pi-pencil",
       command: () => {
+        setAccountForm({login: activeAccount!.login, name: activeAccount!.name, role: activeAccount!.role });
         setDialogState({ visible: true, state: "edit" });
       },
     },
   ];
-
-  
 
   return (
     <div className="page-wrapper" style={{ flexGrow: 1, overflow: "hidden" }}>
@@ -219,7 +218,10 @@ export default function AccountRegistration() {
         header="Регистрация УЗ"
         headerButton={{
           label: "Создание УЗ",
-          action: () => setDialogState({ visible: true, state: "create" }),
+          action: () => {
+            setAccountForm({login: '', name: ''});
+            setDialogState({ visible: true, state: "create" });
+          },
         }}
         searchValue={search}
         onSearchChange={setSearch}
@@ -255,7 +257,22 @@ export default function AccountRegistration() {
           account={activeAccount}
           dialogState={dialogState}
           setDialogState={setDialogState}
-          onDelete={deleteItem}
+          onDelete={() =>
+            confirmDialog({
+              message: (
+                <span>
+                  Вы действительно хотите удалить запись:
+                  <br />
+                  <b>Login: {activeAccount?.login}</b>
+                </span>
+              ),
+              header: "Подтверждение удаления",
+              icon: "pi pi-info-circle",
+              defaultFocus: "reject",
+              acceptClassName: "p-button-danger",
+              accept: deleteItem,
+            })
+          }
         >
           <div className={styles.formFields}>
             <FloatLabel>
@@ -263,7 +280,10 @@ export default function AccountRegistration() {
                 id="username"
                 value={accountForm.login}
                 onChange={(e) =>
-                  setActiveAccountForm({ ...accountForm, login: e.target.value })
+                  setAccountForm({
+                    ...accountForm,
+                    login: e.target.value,
+                  })
                 }
               />
               <label htmlFor="username">Логин</label>
@@ -273,7 +293,7 @@ export default function AccountRegistration() {
                 id="name"
                 value={accountForm.name}
                 onChange={(e) =>
-                  setActiveAccountForm({ ...accountForm, name: e.target.value })
+                  setAccountForm({ ...accountForm, name: e.target.value })
                 }
               />
               <label htmlFor="name">Имя</label>
@@ -281,7 +301,7 @@ export default function AccountRegistration() {
             <Dropdown
               value={accountForm.role}
               onChange={(e: DropdownChangeEvent) =>
-                setActiveAccountForm({ ...accountForm, role: e.value })
+                setAccountForm({ ...accountForm, role: e.value })
               }
               options={roleOptions}
               placeholder="Роль"
