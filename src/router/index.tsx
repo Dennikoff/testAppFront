@@ -6,8 +6,8 @@ import AuthGuard from "./AuthGuard";
 import AcountRegistration from "@/pages/AccountRegistration/AccountRegistration";
 import Administration from "@/pages/Administration/Administration";
 import Testing from "@/pages/Testing/Testing";
-import Control from "@/pages/Administration/components/Control/Control";
-import Logs from "@/pages/Administration/components/Logs/Logs";
+import Control from "@/pages/Administration/components/ContolComponent/Control";
+import Logs from "@/pages/Administration/components/LogsComponent/Logs";
 import Redirect from "@/pages/Administration/components/Redirect/Redirect";
 
 export const publicRoutePaths = [

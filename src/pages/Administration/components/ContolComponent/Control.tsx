@@ -99,6 +99,7 @@ export default function Control() {
       label: "Редактировать",
       icon: "pi pi-pencil",
       command: () => {
+        setAsuzForm({ name: acitveAsuz!.name, url: acitveAsuz!.url });
         setDialogState({ visible: true, state: "edit" });
       },
     },
@@ -110,10 +111,13 @@ export default function Control() {
         searchOption={searchOption}
         setSearchOption={setSearchOption}
         searchOptionList={searchOptionList}
-        header="Регистрация УЗ"
+        header="Управление АСУЗ"
         headerButton={{
           label: "Создание УЗ",
-          action: () => setDialogState({ visible: true, state: "create" }),
+          action: () => {
+            setAsuzForm({name: '', url: ''});
+            setDialogState({ visible: true, state: "create" });
+          },
         }}
         searchValue={search}
         onSearchChange={setSearch}
