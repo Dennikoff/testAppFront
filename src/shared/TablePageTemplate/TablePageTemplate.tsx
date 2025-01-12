@@ -1,4 +1,4 @@
-import { ReactNode, RefObject } from "react";
+import { ReactNode } from "react";
 import styles from "./TablePageTemplate.module.scss";
 import { Button } from "primereact/button";
 import { FloatLabel } from "primereact/floatlabel";

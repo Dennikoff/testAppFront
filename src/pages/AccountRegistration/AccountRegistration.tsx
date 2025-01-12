@@ -8,10 +8,11 @@ import styles from "./AccountRegistration.module.scss";
 import { Menu } from "primereact/menu";
 import { confirmDialog } from "primereact/confirmdialog";
 import UpdateDialog from "../../shared/UpdateDialog/UpdateDialog";
-import { Account, AccountDialogState, AccountForm } from "./types";
+import { Account, AccountForm } from "./types";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { DialogState } from "@/shared/UpdateDialog/types";
 
 const accList: Account[] = [
   {
@@ -151,7 +152,7 @@ export default function AccountRegistration() {
 
   const [accountList, setAccountList] = useState<Account[]>(accList);
 
-  const [dialogState, setDialogState] = useState<AccountDialogState>({
+  const [dialogState, setDialogState] = useState<DialogState>({
     visible: false,
     state: "create",
   });
@@ -254,7 +255,6 @@ export default function AccountRegistration() {
         </DataTable>
         <Menu model={items} popup ref={menu} />
         <UpdateDialog
-          account={activeAccount}
           dialogState={dialogState}
           setDialogState={setDialogState}
           onDelete={() =>

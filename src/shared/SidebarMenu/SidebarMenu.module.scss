@@ -1,6 +1,10 @@
 .linkList {
 	text-align: center;
-	color: var(--color-dark)
+	color: var(--color-dark);
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding-inline: 1rem;
 }
 
 .navLink {

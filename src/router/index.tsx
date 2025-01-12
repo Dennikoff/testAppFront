@@ -8,6 +8,7 @@ import Administration from "@/pages/Administration/Administration";
 import Testing from "@/pages/Testing/Testing";
 import Control from "@/pages/Administration/components/Control/Control";
 import Logs from "@/pages/Administration/components/Logs/Logs";
+import Redirect from "@/pages/Administration/components/Redirect/Redirect";
 
 export const publicRoutePaths = [
 	'/login'
@@ -42,6 +43,11 @@ const router = createBrowserRouter([
 				id: "administration",
 				element: <Administration />,
 				children: [
+					{
+						path: '',
+						id: "administration.redirect",
+						element: <Redirect/>,
+					},
 					{
 						path: 'asuz-control',
 						id: "administration.asuz-control",

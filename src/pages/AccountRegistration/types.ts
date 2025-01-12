@@ -5,11 +5,6 @@ export interface Account {
   role: AccountRole;
 }
 
-export interface AccountDialogState {
-  visible: boolean;
-  state: 'create' | 'edit';
-}
-
 export type AccountRole = 'testAnalyst' | 'tester' | 'administrator';
 export type AccountRoleLabels = 'Тест-аналитик' | 'Тестировщик' | 'Администратор';
 

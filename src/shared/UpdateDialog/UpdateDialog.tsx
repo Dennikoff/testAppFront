@@ -1,17 +1,12 @@
 import { Dialog } from "primereact/dialog";
 import styles from "./UpdateDialog.module.scss";
-import {
-  Account,
-  AccountDialogState,
-  AccountForm,
-} from "../../pages/AccountRegistration/types";
-import { FormEvent, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { FormEvent, ReactNode, useCallback, useMemo } from "react";
 import { Button } from "primereact/button";
+import { DialogState } from "./types";
 
 interface Props {
-  dialogState: AccountDialogState;
-  account?: Account;
-  setDialogState: (newValue: AccountDialogState) => void;
+  dialogState: DialogState;
+  setDialogState: (newValue: DialogState) => void;
   onDelete: () => void;
   children: ReactNode;
 }
@@ -21,36 +16,9 @@ interface Props {
 export default function AccountDialog({
   dialogState,
   setDialogState,
-  account,
   onDelete,
   children,
 }: Props) {
-  const [accountForm, setAccountForm] = useState<AccountForm>(
-    dialogState.state === "edit" && account
-      ? {
-          login: account.login,
-          name: account.name,
-          role: account.role,
-        }
-      : { login: "", name: "", role: undefined }
-  );
-
-  useEffect(() => { 
-    if (account) {
-      setAccountForm({
-        login: account.login,
-        name: account.name,
-        role: account.role,
-      });
-    }
-  }, [account]);
-
-  useEffect(() => {
-    if (dialogState.state === "create") {
-      setAccountForm({ login: "", name: "", role: undefined });
-    }
-  }, [dialogState.state]);
-
   const formSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
 
