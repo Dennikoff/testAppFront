@@ -13,9 +13,8 @@ import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { DialogState } from "@/shared/UpdateDialog/types";
-import { deleteUser, fetchRoles, fetchUsers, registerUser } from "@/api/user";
+import { deleteUser, fetchRoles, fetchUsers, registerUser, updateUser } from "@/api/user";
 import { User } from "@/types";
-import { Toast } from "primereact/toast";
 
 export default function AccountRegistration() {
   const [search, setSearch] = useState<string>("");
@@ -180,8 +179,12 @@ export default function AccountRegistration() {
               accept: deleteItem,
             })
           }
-          onSubmit={async () => {
-            await registerUser(accountForm)
+          onCreate={async () => {
+            await registerUser(accountForm);
+            loadUserData();
+          }}
+          onUpdate={async () => {
+            await updateUser(accountForm, activeAccount!.id);
             loadUserData();
           }}
         >
@@ -190,13 +193,12 @@ export default function AccountRegistration() {
               <InputText
                 id="username"
                 value={accountForm.username}
-                onChange={(e) => {
-                  console.log(e);
+                onChange={(e) =>
                   setAccountForm({
                     ...accountForm,
                     username: e.target.value,
-                  });
-                }}
+                  })
+                }
               />
               <label htmlFor="username">Логин</label>
             </FloatLabel>

@@ -166,6 +166,8 @@ export default function Control() {
               accept: deleteItem,
             })
           }
+          onCreate={async () => console.log('create')}
+          onUpdate={async () => console.log('update')}
         >
           <div className={styles.formFields}>
             <FloatLabel>

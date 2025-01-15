@@ -9,7 +9,8 @@ interface Props {
   dialogState: DialogState;
   setDialogState: (newValue: DialogState) => void;
   onDelete: () => void;
-  onSubmit: () => Promise<void>;
+  onCreate: () => Promise<void>;
+  onUpdate: () => Promise<void>;
   children: ReactNode;
 }
 
@@ -17,7 +18,8 @@ export default function AccountDialog({
   dialogState,
   setDialogState,
   onDelete,
-  onSubmit,
+  onCreate,
+  onUpdate,
   children,
 }: Props) {
   const toast = useRef<Toast>(null);
@@ -25,7 +27,8 @@ export default function AccountDialog({
   const formSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      onSubmit()
+      if(dialogState.state === 'create') {
+        onCreate()
         .then(() => setDialogState({ ...dialogState, visible: false }))
         .catch(() =>
           toast.current?.show({
@@ -34,8 +37,20 @@ export default function AccountDialog({
             detail: "Произошла ошибка",
           })
         );
+      } else {
+        onUpdate()
+        .then(() => setDialogState({ ...dialogState, visible: false }))
+        .catch(() =>
+          toast.current?.show({
+            severity: "error",
+            summary: "Ошибка",
+            detail: "Произошла ошибка",
+          })
+        );
+      }
+      
     },
-    [dialogState, onSubmit]
+    [dialogState, onCreate, onUpdate]
   );
 
   const formControls = useMemo(() => {
