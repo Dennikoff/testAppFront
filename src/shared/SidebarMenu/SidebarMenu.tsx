@@ -8,7 +8,7 @@ interface Props {
 export default function SidebarMenu({linkList}: Props) {
 
   return (
-    <div className="page-container">
+    <div className={`page-container ${styles.sidebarMenu}`}>
       <ul className={styles.linkList}>
         {linkList.map((link) => {
           return (
