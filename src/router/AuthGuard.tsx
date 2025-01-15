@@ -12,7 +12,6 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const isPublicRoute = publicRoutePaths.includes(location.pathname);
-
     if (getAuthInfo()) {
       if (isPublicRoute) {
         console.log("here");

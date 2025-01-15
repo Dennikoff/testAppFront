@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useRef, useState } from "react";
 import styles from "./Login.module.scss";
 import Steve from "@/static/assets/steve.png";
 import { InputText } from "primereact/inputtext";
@@ -7,22 +7,30 @@ import { LoginForm } from "./types";
 import { Button } from "primereact/button";
 import { Password } from "primereact/password";
 import { useNavigate } from "react-router-dom";
+import { login } from "@/api/auth";
+import { Toast } from "primereact/toast";
 export default function Login() {
+  const toast = useRef<Toast>(null);
   const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState<LoginForm>({
-    login: "",
+    username: "",
     password: "",
   });
 
-  const formSubmit = useCallback((e: FormEvent) => {
-    e.preventDefault();
-    console.log(loginForm);
-    localStorage.setItem('jwt', `${loginForm.login}`);
-    navigate('/');
-  }, [loginForm]);
+  const formSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      console.log(loginForm);
+      login(loginForm).then(() => navigate('/')).catch(() => {
+        toast.current?.show({ severity: 'error', summary: 'Ошибка', detail: 'Неверный логин или пароль' });
+      });
+    },
+    [loginForm]
+  );
 
   return (
     <section id={styles.loginForm}>
+      <Toast ref={toast}/>
       <div className={styles.formAndImage}>
         <div className={styles.formContainer}>
           <h1 className={styles.loginHeader}>Форма авторизации</h1>
@@ -30,9 +38,9 @@ export default function Login() {
             <FloatLabel>
               <InputText
                 id="username"
-                value={loginForm.login}
+                value={loginForm.username}
                 onChange={(e) =>
-                  setLoginForm({ ...loginForm, login: e.target.value })
+                  setLoginForm({ ...loginForm, username: e.target.value })
                 }
               />
               <label htmlFor="username">Логин</label>
@@ -40,8 +48,7 @@ export default function Login() {
             <FloatLabel>
               <Password
                 toggleMask
-                feedback={false} 
-  
+                feedback={false}
                 id="password"
                 value={loginForm.password}
                 onChange={(e) =>
@@ -50,7 +57,12 @@ export default function Login() {
               />
               <label htmlFor="password">Пароль</label>
             </FloatLabel>
-            <Button type="submit" severity="secondary" className={styles.button} label="Войти" />
+            <Button
+              type="submit"
+              severity="secondary"
+              className={styles.button}
+              label="Войти"
+            />
           </form>
         </div>
         <img className={styles.steve} src={Steve} />
