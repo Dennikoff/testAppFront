@@ -3,7 +3,7 @@ import TablePageTemplate, {
 } from "@/shared/TablePageTemplate/TablePageTemplate";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./AccountRegistration.module.scss";
 import { Menu } from "primereact/menu";
 import { confirmDialog } from "primereact/confirmdialog";
@@ -13,120 +13,11 @@ import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { DialogState } from "@/shared/UpdateDialog/types";
-
-const accList: Account[] = [
-  {
-    id: 1,
-    login: "User1",
-    name: "Alexander",
-    role: "tester",
-  },
-  {
-    id: 2,
-    login: "User2",
-    name: "Alexander",
-    role: "tester",
-  },
-  {
-    id: 3,
-    login: "User3",
-    name: "Alexander",
-    role: "testAnalyst",
-  },
-  {
-    id: 4,
-    login: "User4",
-    name: "Alexander",
-    role: "testAnalyst",
-  },
-  {
-    id: 5,
-    login: "User5",
-    name: "Alexander",
-    role: "tester",
-  },
-  {
-    id: 6,
-    login: "User6",
-    name: "Alexander",
-    role: "administrator",
-  },
-  {
-    id: 7,
-    login: "User1",
-    name: "Alexander",
-    role: "tester",
-  },
-  {
-    id: 8,
-    login: "User2",
-    name: "Alexander",
-    role: "tester",
-  },
-  {
-    id: 9,
-    login: "User3",
-    name: "Alexander",
-    role: "testAnalyst",
-  },
-  {
-    id: 10,
-    login: "User4",
-    name: "Alexander",
-    role: "testAnalyst",
-  },
-  {
-    id: 11,
-    login: "User5",
-    name: "Alexander",
-    role: "tester",
-  },
-  {
-    id: 12,
-    login: "User6",
-    name: "Alexander",
-    role: "administrator",
-  },
-  {
-    id: 13,
-    login: "User4",
-    name: "Alexander",
-    role: "testAnalyst",
-  },
-  {
-    id: 14,
-    login: "User5",
-    name: "Alexander",
-    role: "tester",
-  },
-  {
-    id: 15,
-    login: "User6",
-    name: "Alexander",
-    role: "administrator",
-  },
-  {
-    id: 16,
-    login: "User4",
-    name: "Alexander",
-    role: "testAnalyst",
-  },
-  {
-    id: 17,
-    login: "User5",
-    name: "Alexander",
-    role: "tester",
-  },
-  {
-    id: 18,
-    login: "User6",
-    name: "Alexander",
-    role: "administrator",
-  },
-];
+import { fetchUsers } from "@/api/user";
 
 export default function AccountRegistration() {
   const [search, setSearch] = useState<string>("");
+  const [loading, setLoading] = useState(false);
   const searchOptionList: SearchOption[] = [
     {
       label: "Поиск по логину",
@@ -150,7 +41,7 @@ export default function AccountRegistration() {
 
   const [searchOption, setSearchOption] = useState<SearchOption | null>(null);
 
-  const [accountList, setAccountList] = useState<Account[]>(accList);
+  const [accountList, setAccountList] = useState<Account[]>([]);
 
   const [dialogState, setDialogState] = useState<DialogState>({
     visible: false,
@@ -163,6 +54,15 @@ export default function AccountRegistration() {
     setAccountList(accountList.filter((val) => val.id !== activeAccount?.id));
     setDialogState({ visible: false, state: "create" });
   }, [activeAccount, accountList]);
+
+  async function loadUserData() {
+    setLoading(true);
+    fetchUsers().finally(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    loadUserData();
+  }, []);
 
   const roleOptions = [
     {
@@ -204,7 +104,11 @@ export default function AccountRegistration() {
       label: "Редактировать",
       icon: "pi pi-pencil",
       command: () => {
-        setAccountForm({login: activeAccount!.login, name: activeAccount!.name, role: activeAccount!.role });
+        setAccountForm({
+          login: activeAccount!.login,
+          name: activeAccount!.name,
+          role: activeAccount!.role,
+        });
         setDialogState({ visible: true, state: "edit" });
       },
     },
@@ -220,7 +124,7 @@ export default function AccountRegistration() {
         headerButton={{
           label: "Создание УЗ",
           action: () => {
-            setAccountForm({login: '', name: ''});
+            setAccountForm({ login: "", name: "" });
             setDialogState({ visible: true, state: "create" });
           },
         }}
@@ -234,6 +138,7 @@ export default function AccountRegistration() {
           scrollHeight="100%"
           value={accountList}
           className={styles.table}
+          loading={loading}
         >
           <Column align="center" field="id" header="ID"></Column>
           <Column align="center" field="login" header="Логин"></Column>
