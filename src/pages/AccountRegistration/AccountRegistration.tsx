@@ -8,12 +8,14 @@ import styles from "./AccountRegistration.module.scss";
 import { Menu } from "primereact/menu";
 import { confirmDialog } from "primereact/confirmdialog";
 import UpdateDialog from "../../shared/UpdateDialog/UpdateDialog";
-import { Account, AccountForm } from "./types";
+import { UserForm, RoleOption } from "./types";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { DialogState } from "@/shared/UpdateDialog/types";
-import { fetchUsers } from "@/api/user";
+import { deleteUser, fetchRoles, fetchUsers, registerUser } from "@/api/user";
+import { User } from "@/types";
+import { Toast } from "primereact/toast";
 
 export default function AccountRegistration() {
   const [search, setSearch] = useState<string>("");
@@ -33,51 +35,51 @@ export default function AccountRegistration() {
     },
   ];
 
-  const [activeAccount, setActiveAccount] = useState<Account>();
-  const [accountForm, setAccountForm] = useState<AccountForm>({
-    login: "",
+  const [activeAccount, setActiveAccount] = useState<User>();
+  const [accountForm, setAccountForm] = useState<UserForm>({
+    username: "",
+    password: "",
     name: "",
   });
 
   const [searchOption, setSearchOption] = useState<SearchOption | null>(null);
 
-  const [accountList, setAccountList] = useState<Account[]>([]);
+  const [accountList, setAccountList] = useState<User[]>([]);
 
   const [dialogState, setDialogState] = useState<DialogState>({
     visible: false,
     state: "create",
   });
 
+  const [roleOptionList, setRoleOptionList] = useState<RoleOption[]>([]);
+
   const menu = useRef<Menu>(null);
 
-  const deleteItem = useCallback(() => {
-    setAccountList(accountList.filter((val) => val.id !== activeAccount?.id));
+  const deleteItem = useCallback(async () => {
+    await deleteUser(activeAccount!.id);
+    loadUserData();
     setDialogState({ visible: false, state: "create" });
   }, [activeAccount, accountList]);
 
   async function loadUserData() {
     setLoading(true);
-    fetchUsers().finally(() => setLoading(false));
+    fetchUsers()
+      .then((data) => {
+        setAccountList(data);
+      })
+      .finally(() => setLoading(false));
+  }
+
+  async function loadRoleValues() {
+    fetchRoles().then((data) => {
+      setRoleOptionList(data);
+    });
   }
 
   useEffect(() => {
     loadUserData();
+    loadRoleValues();
   }, []);
-
-  const roleOptions = [
-    {
-      label: "Тестировщик",
-      value: "tester",
-    },
-    {
-      label: "Тест-аналитик",
-      value: "testAnalyst",
-    },
-    {
-      label: "Администратор",
-      value: "administrator",
-    },
-  ];
 
   const items = [
     {
@@ -89,7 +91,7 @@ export default function AccountRegistration() {
             <span>
               Вы действительно хотите удалить запись:
               <br />
-              <b>Login: {activeAccount?.login}</b>
+              <b>Username: {activeAccount?.username}</b>
             </span>
           ),
           header: "Подтверждение удаления",
@@ -105,9 +107,9 @@ export default function AccountRegistration() {
       icon: "pi pi-pencil",
       command: () => {
         setAccountForm({
-          login: activeAccount!.login,
+          username: activeAccount!.username,
+          password: "",
           name: activeAccount!.name,
-          role: activeAccount!.role,
         });
         setDialogState({ visible: true, state: "edit" });
       },
@@ -124,7 +126,7 @@ export default function AccountRegistration() {
         headerButton={{
           label: "Создание УЗ",
           action: () => {
-            setAccountForm({ login: "", name: "" });
+            setAccountForm({ username: "", password: "", name: "" });
             setDialogState({ visible: true, state: "create" });
           },
         }}
@@ -141,7 +143,7 @@ export default function AccountRegistration() {
           loading={loading}
         >
           <Column align="center" field="id" header="ID"></Column>
-          <Column align="center" field="login" header="Логин"></Column>
+          <Column align="center" field="username" header="Логин"></Column>
           <Column align="center" field="name" header="Имя"></Column>
           <Column align="center" field="role" header="Роль"></Column>
           <Column
@@ -168,7 +170,7 @@ export default function AccountRegistration() {
                 <span>
                   Вы действительно хотите удалить запись:
                   <br />
-                  <b>Login: {activeAccount?.login}</b>
+                  <b>Username: {activeAccount?.username}</b>
                 </span>
               ),
               header: "Подтверждение удаления",
@@ -178,18 +180,23 @@ export default function AccountRegistration() {
               accept: deleteItem,
             })
           }
+          onSubmit={async () => {
+            await registerUser(accountForm)
+            loadUserData();
+          }}
         >
           <div className={styles.formFields}>
             <FloatLabel>
               <InputText
                 id="username"
-                value={accountForm.login}
-                onChange={(e) =>
+                value={accountForm.username}
+                onChange={(e) => {
+                  console.log(e);
                   setAccountForm({
                     ...accountForm,
-                    login: e.target.value,
-                  })
-                }
+                    username: e.target.value,
+                  });
+                }}
               />
               <label htmlFor="username">Логин</label>
             </FloatLabel>
@@ -203,12 +210,24 @@ export default function AccountRegistration() {
               />
               <label htmlFor="name">Имя</label>
             </FloatLabel>
+            <FloatLabel>
+              <InputText
+                id="password"
+                value={accountForm.password}
+                onChange={(e) =>
+                  setAccountForm({ ...accountForm, password: e.target.value })
+                }
+              />
+              <label htmlFor="password">Пароль</label>
+            </FloatLabel>
             <Dropdown
-              value={accountForm.role}
+              value={accountForm.roleId}
+              optionLabel="roleName"
+              optionValue="id"
               onChange={(e: DropdownChangeEvent) =>
-                setAccountForm({ ...accountForm, role: e.value })
+                setAccountForm({ ...accountForm, roleId: e.value })
               }
-              options={roleOptions}
+              options={roleOptionList}
               placeholder="Роль"
             />
           </div>

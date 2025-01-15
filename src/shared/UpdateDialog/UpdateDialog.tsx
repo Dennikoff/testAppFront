@@ -1,38 +1,55 @@
 import { Dialog } from "primereact/dialog";
 import styles from "./UpdateDialog.module.scss";
-import { FormEvent, ReactNode, useCallback, useMemo } from "react";
+import { FormEvent, ReactNode, useCallback, useMemo, useRef } from "react";
 import { Button } from "primereact/button";
 import { DialogState } from "./types";
+import { Toast } from "primereact/toast";
 
 interface Props {
   dialogState: DialogState;
   setDialogState: (newValue: DialogState) => void;
   onDelete: () => void;
+  onSubmit: () => Promise<void>;
   children: ReactNode;
 }
-
-
 
 export default function AccountDialog({
   dialogState,
   setDialogState,
   onDelete,
+  onSubmit,
   children,
 }: Props) {
-  const formSubmit = useCallback((e: FormEvent) => {
-    e.preventDefault();
+  const toast = useRef<Toast>(null);
 
-    setDialogState({ ...dialogState, visible: false });
-  }, [dialogState]);
-
-  
+  const formSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      onSubmit()
+        .then(() => setDialogState({ ...dialogState, visible: false }))
+        .catch(() =>
+          toast.current?.show({
+            severity: "error",
+            summary: "Ошибка",
+            detail: "Произошла ошибка",
+          })
+        );
+    },
+    [dialogState, onSubmit]
+  );
 
   const formControls = useMemo(() => {
     return (
       <>
         {dialogState.state === "edit" ? (
           <>
-            <Button outlined severity="danger" label="Удалить" type="reset" onClick={onDelete}/>
+            <Button
+              outlined
+              severity="danger"
+              label="Удалить"
+              type="reset"
+              onClick={onDelete}
+            />
             <Button label="Изменить" type="submit" />
           </>
         ) : (
@@ -60,6 +77,7 @@ export default function AccountDialog({
       headerClassName={styles.dialogHeader}
     >
       <form className={styles.dialogForm} onSubmit={formSubmit}>
+        <Toast ref={toast} />
         {children}
         <div className={styles.formControls}>{formControls}</div>
       </form>

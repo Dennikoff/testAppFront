@@ -1,13 +1,11 @@
-export interface Account {
+import { User } from "@/types";
+
+export interface RoleOption {
   id: number;
-  login: string;
-  name: string;
-  role: AccountRole;
-}
+  roleName: string;
+} 
 
-export type AccountRole = 'testAnalyst' | 'tester' | 'administrator';
-export type AccountRoleLabels = 'Тест-аналитик' | 'Тестировщик' | 'Администратор';
-
-export interface AccountForm extends Omit<Account, 'id' | 'role'> {
-	role?: AccountRole;
+export interface UserForm extends Omit<User, 'id' | 'created' | 'role'> {
+	roleId?: number;
+  password: string;
 }

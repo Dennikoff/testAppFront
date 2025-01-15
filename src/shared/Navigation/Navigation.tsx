@@ -6,7 +6,6 @@ import { publicRoutePaths } from "@/router";
 import { Avatar } from "primereact/avatar";
 import { Menu } from "primereact/menu";
 import { SyntheticEvent, useCallback, useRef } from "react";
-import { logout } from "@/api/auth";
 
 export default function Navigation() {
   const location = useLocation();
@@ -21,7 +20,7 @@ export default function Navigation() {
           label: "Выйти",
           icon: "pi pi-sign-out",
           url: "/login",
-          command: () => logout(),
+          command: () => localStorage.removeItem('jwt'),
         },
       ],
     },
