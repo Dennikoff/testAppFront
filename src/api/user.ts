@@ -28,12 +28,12 @@ export async function updateUser(formData: UserForm, userId: number) {
 
 	// Waiting pasha to change roleId to roleName
 
-	// await privateInstance.patch('/api/users/patch/roleName/by/userId', {}, {
-	// 	params: {
-	// 		userId,
-	// 		newRoleName: formData.roleId,
-	// 	}
-	// });
+	await privateInstance.patch('/api/users/patch/roleName/by/userId', {}, {
+		params: {
+			userId,
+			newRoleName: formData.roleName,
+		}
+	});
 
 	if(formData.password) {
 		await privateInstance.patch('/api/users/patch/password/by/userId', {}, {

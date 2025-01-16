@@ -109,6 +109,7 @@ export default function AccountRegistration() {
           username: activeAccount!.username,
           password: "",
           name: activeAccount!.name,
+          roleName: activeAccount?.role,
         });
         setDialogState({ visible: true, state: "edit" });
       },
@@ -223,11 +224,11 @@ export default function AccountRegistration() {
               <label htmlFor="password">Пароль</label>
             </FloatLabel>
             <Dropdown
-              value={accountForm.roleId}
-              optionLabel="roleName"
-              optionValue="id"
+              value={accountForm.roleName}
+              optionLabel="description"
+              optionValue="roleName"
               onChange={(e: DropdownChangeEvent) =>
-                setAccountForm({ ...accountForm, roleId: e.value })
+                setAccountForm({ ...accountForm, roleName: e.value })
               }
               options={roleOptionList}
               placeholder="Роль"
