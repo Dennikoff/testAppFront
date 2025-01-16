@@ -1,9 +1,14 @@
 .testingPage {
 	display: flex;
 	gap: 1.5rem;
-	height: 100%;
+	flex-grow: 1;
+	overflow: hidden;
 }
 
 .outlet {
 	flex-grow: 1;
+}
+
+.page {
+	height: 100%;
 }

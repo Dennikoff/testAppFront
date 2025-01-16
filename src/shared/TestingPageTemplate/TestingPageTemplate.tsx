@@ -1,19 +1,21 @@
 import { ReactNode } from "react";
-import styles from "./TablePageTemplate.module.scss";
+import styles from "./TestingPageTemplate.module.scss";
 import { Button } from "primereact/button";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
+import ItemContainer from "./components/ItemContainer";
+import { DataWithName } from "./types";
 
-interface TablePageTemplateProps {
+interface TestingPageTemplateProps {
   header: string;
   headerButton?: { label: string; action: () => void };
-  children: ReactNode;
   searchValue: string;
   onSearchChange: (value: string) => void;
   searchOptionList: SearchOption[];
   searchOption: SearchOption | null;
   setSearchOption: (value: SearchOption) => void;
+  data: DataWithName[];
 }
 
 export interface SearchOption {
@@ -21,16 +23,16 @@ export interface SearchOption {
   value: string;
 }
 
-export const TablePageTemplate = ({
+export function TestingPageTemplate({
   header,
   headerButton,
   searchValue,
-  children,
   onSearchChange,
   searchOptionList,
   searchOption,
   setSearchOption,
-}: TablePageTemplateProps) => {
+  data,
+}: TestingPageTemplateProps) {
   return (
     <div className={`page-container ${styles.tablePageWrapper}`}>
       <div className={styles.headerContainer}>
@@ -66,10 +68,14 @@ export const TablePageTemplate = ({
         </div>
       </div>
       <div className={styles.tableWrapper}>
-       {children}
+        <ul className={styles.itemsList}>
+          {data.map((val) => (
+            <li><ItemContainer data={val} /></li>
+          ))}
+        </ul>
       </div>
     </div>
   );
-};
+}
 
-export default TablePageTemplate;
+export default TestingPageTemplate;

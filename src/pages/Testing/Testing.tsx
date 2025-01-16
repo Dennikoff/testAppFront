@@ -5,6 +5,10 @@ import { Outlet } from "react-router-dom";
 export default function Administration() {
   const sidebarLinkList = [
     {
+      path: "project",
+      label: "Проект",
+    },
+    {
       path: "test-plan",
       label: "Тест-план",
     },

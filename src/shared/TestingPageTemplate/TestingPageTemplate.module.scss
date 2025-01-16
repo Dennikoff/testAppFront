@@ -1,0 +1,41 @@
+.tablePageWrapper {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.headerContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.headerButton {
+	width: 300px;
+}
+
+.filerContainer {
+	margin-top: 5rem;
+	display: flex;
+	gap: 2rem;
+}
+
+.searchField {
+	width: 300px;
+}
+
+.dropdownField {
+	width: 260px;
+}
+
+.tableWrapper {
+	margin-top: 2rem;
+	overflow: auto;
+	flex-grow: 1;
+}
+
+.itemsList {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 1rem;
+}

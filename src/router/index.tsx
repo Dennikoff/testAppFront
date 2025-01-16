@@ -8,10 +8,11 @@ import Administration from "@/pages/Administration/Administration";
 import Testing from "@/pages/Testing/Testing";
 import Control from "@/pages/Administration/components/ContolComponent/Control";
 import Logs from "@/pages/Administration/components/LogsComponent/Logs";
-import RedirectAdministration from "@/pages/Administration/components/Redirect/Redirect";
-import RedirectTesting from "@/pages/Testing/components/Redirect/Redirect";
+
 import TestPlan from "@/pages/Testing/components/TestPlan/TestPlan";
 import TestCase from "@/pages/Testing/components/TestCase/TestCase";
+import Project from "@/pages/Testing/components/Project/Project";
+import Redirect from "@/shared/Redirect/Redirect";
 
 export const publicRoutePaths = [
 	'/login'
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
 			{
 				path: '',
 				id: "home",
-				element: <Home />
+				element: <Redirect pathName="/registration-acc"/>,
 			},
 			{
 				path: '/login',
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
 					{
 						path: '',
 						id: "administration.redirect",
-						element: <RedirectAdministration/>,
+						element: <Redirect pathName="/administration/asuz-control"/>,
 					},
 					{
 						path: 'asuz-control',
@@ -72,7 +73,12 @@ const router = createBrowserRouter([
 					{
 						path: '',
 						id: "testing.redirect",
-						element: <RedirectTesting/>,
+						element: <Redirect pathName="/testing/project"/>,
+					},
+					{
+						path: 'project',
+						id: "testing.project",
+						element: <Project/>
 					},
 					{
 						path: 'test-plan',

@@ -5,3 +5,8 @@ export interface User {
   role: string;
   created: Date;
 }
+
+export interface Project {
+  id: number;
+  name: string;
+}
