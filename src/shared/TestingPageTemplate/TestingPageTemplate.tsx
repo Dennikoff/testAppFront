@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import styles from "./TestingPageTemplate.module.scss";
 import { Button } from "primereact/button";
 import { FloatLabel } from "primereact/floatlabel";
@@ -6,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import ItemContainer from "./components/ItemContainer";
 import { DataWithName } from "./types";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 interface TestingPageTemplateProps {
   header: string;
@@ -16,6 +16,7 @@ interface TestingPageTemplateProps {
   searchOption: SearchOption | null;
   setSearchOption: (value: SearchOption) => void;
   data: DataWithName[];
+  loading: boolean;
 }
 
 export interface SearchOption {
@@ -32,6 +33,7 @@ export function TestingPageTemplate({
   searchOption,
   setSearchOption,
   data,
+  loading,
 }: TestingPageTemplateProps) {
   return (
     <div className={`page-container ${styles.tablePageWrapper}`}>
@@ -68,11 +70,17 @@ export function TestingPageTemplate({
         </div>
       </div>
       <div className={styles.tableWrapper}>
-        <ul className={styles.itemsList}>
-          {data.map((val) => (
-            <li><ItemContainer data={val} /></li>
-          ))}
-        </ul>
+        {!loading ? (
+          <ul className={styles.itemsList}>
+            {data.map((val) => (
+              <li>
+                <ItemContainer data={val} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className={styles.spinnerContainer}><ProgressSpinner/></div>
+        )}
       </div>
     </div>
   );

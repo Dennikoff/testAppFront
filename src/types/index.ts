@@ -10,3 +10,9 @@ export interface Project {
   id: number;
   name: string;
 }
+
+export interface TestPlan {
+  id: number;
+  name: string;
+  projectId: number;
+}

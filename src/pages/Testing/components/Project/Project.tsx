@@ -43,6 +43,7 @@ export default function ProjectComponent() {
             console.log("create");
           },
         }}
+				loading={loading}
         searchValue={search}
         onSearchChange={setSearch}
 				data={projectList}
