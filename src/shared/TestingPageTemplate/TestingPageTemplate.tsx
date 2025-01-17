@@ -7,6 +7,7 @@ import ItemContainer from "./components/ItemContainer";
 import { DataWithName } from "./types";
 import { ProgressSpinner } from "primereact/progressspinner";
 
+
 interface TestingPageTemplateProps {
   header: string;
   headerButton?: { label: string; action: () => void };
@@ -17,6 +18,7 @@ interface TestingPageTemplateProps {
   setSearchOption: (value: SearchOption) => void;
   data: DataWithName[];
   loading: boolean;
+  updateItem: (data: DataWithName) => void
 }
 
 export interface SearchOption {
@@ -34,7 +36,9 @@ export function TestingPageTemplate({
   setSearchOption,
   data,
   loading,
+  updateItem,
 }: TestingPageTemplateProps) {
+
   return (
     <div className={`page-container ${styles.tablePageWrapper}`}>
       <div className={styles.headerContainer}>
@@ -73,13 +77,18 @@ export function TestingPageTemplate({
         {!loading ? (
           <ul className={styles.itemsList}>
             {data.map((val) => (
-              <li>
-                <ItemContainer data={val} />
+              <li key={val.name}>
+                <ItemContainer
+                  data={val}
+                  updateItem={updateItem}
+                />
               </li>
             ))}
           </ul>
         ) : (
-          <div className={styles.spinnerContainer}><ProgressSpinner/></div>
+          <div className={styles.spinnerContainer}>
+            <ProgressSpinner />
+          </div>
         )}
       </div>
     </div>

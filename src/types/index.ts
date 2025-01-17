@@ -1,3 +1,5 @@
+export type Status = "SUCCESS" | "FAIL" | "TO DO";
+
 export interface User {
   id: number;
   username: string;
@@ -14,5 +16,16 @@ export interface Project {
 export interface TestPlan {
   id: number;
   name: string;
+  taskKey: string;
+  status: Status;
   projectId: number;
+}
+
+export interface TestCase {
+  id: number;
+  name: string;
+  preCondition: string;
+  postCondition: string;
+  status: Status;
+  testPlanId: number;
 }

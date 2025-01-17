@@ -72,7 +72,7 @@ export default function AccountDialog({
         )}
       </>
     );
-  }, [dialogState.state]);
+  }, [dialogState.state, onDelete]);
 
   return (
     <Dialog

@@ -3,11 +3,13 @@ import { DataWithName } from "../types";
 import styles from "./ItemContainer.module.scss";
 import { Button } from "primereact/button";
 
+
 interface Props {
   data: DataWithName;
+  updateItem: (data: DataWithName) => void
 }
 
-export default function ItemContainer({ data }: Props) {
+export default function ItemContainer({ data, updateItem }: Props) {
   const properties = useMemo(() => {
     const tempMas = [];
     for (let property in data) {
@@ -23,11 +25,11 @@ export default function ItemContainer({ data }: Props) {
       <hr className={styles.hr} />
       <ul className={styles.propertyList}>
         {properties.map((val) => (
-          <li>{val}</li>
+          <li key={val}>{val}</li>
         ))}
       </ul>
       <div className={styles.buttonWrapper}>
-        <Button label="Открыть" size="small" className={styles.button} />
+        <Button label="Редактировать" size="small" className={styles.button} onClick={() => updateItem(data)}/>
       </div>
     </div>
   );
