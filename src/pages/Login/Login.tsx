@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useRef, useState } from "react";
 import styles from "./Login.module.scss";
 import Steve from "@/static/assets/steve.png";
 import { InputText } from "primereact/inputtext";
