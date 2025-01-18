@@ -1,4 +1,4 @@
-import { TestPlan } from '@/types'
+import { TestCase, TestPlan } from '@/types'
 import {privateInstance} from '.'
 import { TestPlanForm } from '@/pages/Testing/types'
 
@@ -19,3 +19,7 @@ export async function updateTestPlan(formData: TestPlanForm, id: number) {
 	return await privateInstance.patch(`/api/test-plans/${id}`, formData)
 }
 
+export async function fetchConnectedTestCases(testPlanId: number): Promise<TestCase[]> {
+	const response = await privateInstance.get(`/api/test-plans/${testPlanId}/test-cases`)
+	return response.data
+}

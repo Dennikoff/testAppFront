@@ -13,6 +13,7 @@ import { DataWithName } from "@/shared/TestingPageTemplate/types";
 import {
   createTestPlan,
   deleteTestPlan,
+  fetchConnectedTestCases,
   fetchTestPlan,
   updateTestPlan,
 } from "@/api/testPlan";
@@ -37,7 +38,9 @@ export default function ProjectComponent() {
     },
   ];
 
-  const [projectOptionList, setProjectOptionList] = useState<ProjectOption[]>([]);
+  const [projectOptionList, setProjectOptionList] = useState<ProjectOption[]>(
+    []
+  );
   const [tmProjectList, setTmProjectList] = useState<tmProject[]>([]);
   const [tmTaskList, setTmTaskList] = useState<tmTasks[]>([]);
 
@@ -55,32 +58,38 @@ export default function ProjectComponent() {
   }, [activeItem, testPlanList]);
 
   function loadTmTaskList(projectId: number) {
-    fetchTmTasks(projectId)
-      .then((data) => setTmTaskList(data))
-  }
-  
-  function loadTmProjectList() {
-    fetchTmProjects()
-      .then((data) => setTmProjectList(data))
-  }
-  
-  function loadProjectOptions() {
-    fetchProjects()
-      .then((data) => setProjectOptionList(data))
+    fetchTmTasks(projectId).then((data) => setTmTaskList(data));
   }
 
-  function loadTestPlanData() {
+  function loadTmProjectList() {
+    fetchTmProjects().then((data) => setTmProjectList(data));
+  }
+
+  function loadProjectOptions() {
+    fetchProjects().then((data) => setProjectOptionList(data));
+  }
+
+  async function loadTestPlanData() {
     setLoading(true);
-    fetchTestPlan()
-      .then((data) => setTestPlanList(data))
-      .finally(() => setLoading(false));
+    const testPlanList = await fetchTestPlan()
+    for(let index in testPlanList) {
+      const data = await fetchConnectedTestCases(testPlanList[index].id)
+      console.log(data);
+      const testCasesList = data.reduce((acc, value) => {
+        return acc =  `${acc}${value.id} `;
+      }, '')
+
+      testPlanList[index].testCases = testCasesList;
+    }
+    setTestPlanList(testPlanList);
+    setLoading(false);
   }
 
   useEffect(() => {
-    if(asuzProjectId) {
+    if (asuzProjectId) {
       loadTmTaskList(asuzProjectId);
     }
-  }, [asuzProjectId])
+  }, [asuzProjectId]);
 
   useEffect(() => {
     loadTestPlanData();
@@ -174,9 +183,7 @@ export default function ProjectComponent() {
             value={asuzProjectId}
             optionLabel="title"
             optionValue="id"
-            onChange={(e: DropdownChangeEvent) =>
-              setAsuzProjectId(e.value)
-            }
+            onChange={(e: DropdownChangeEvent) => setAsuzProjectId(e.value)}
             options={tmProjectList}
             placeholder="Выбор проект АСУЗ"
           />
@@ -191,7 +198,6 @@ export default function ProjectComponent() {
             options={tmTaskList}
             placeholder="Выбор Задачи"
           />
-          
         </div>
       </UpdateDialog>
     </div>

@@ -2,7 +2,7 @@ import TestingPageTemplate from "@/shared/TestingPageTemplate/TestingPageTemplat
 import styles from "../../Testing.module.scss";
 import { useCallback, useEffect, useState } from "react";
 import { SearchOption } from "@/shared/TablePageTemplate/TablePageTemplate";
-import { TestCase } from "@/types";
+import { TestCase, TestPlan } from "@/types";
 import UpdateDialog from "@/shared/UpdateDialog/UpdateDialog";
 import { DialogState } from "@/shared/UpdateDialog/types";
 import { confirmDialog } from "primereact/confirmdialog";
@@ -11,7 +11,14 @@ import { InputText } from "primereact/inputtext";
 import { DataWithName } from "@/shared/TestingPageTemplate/types";
 
 import { TestCaseForm } from "../../types";
-import { createTestCase, deleteTestCase, fetchTestCase, updateTestCase } from "@/api/testCase";
+import {
+  createTestCase,
+  deleteTestCase,
+  fetchTestCase,
+  updateTestCase,
+} from "@/api/testCase";
+import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { fetchTestPlan } from "@/api/testPlan";
 
 export default function ProjectComponent() {
   const [search, setSearch] = useState<string>("");
@@ -38,10 +45,16 @@ export default function ProjectComponent() {
 
   const [testCaseList, setTestCaseList] = useState<TestCase[]>([]);
 
+  const [testPlanList, setTestPlanList] = useState<TestPlan[]>([]);
+
   const deleteItem = useCallback(async () => {
     deleteTestCase(activeItem!.id).then(() => loadTestCaseData());
     setDialogState({ visible: false, state: "create" });
   }, [activeItem, testCaseList]);
+
+  function loadTestPlanData() {
+    fetchTestPlan().then((data) => setTestPlanList(data));
+  }
 
   function loadTestCaseData() {
     setLoading(true);
@@ -51,6 +64,7 @@ export default function ProjectComponent() {
   }
 
   useEffect(() => {
+		loadTestPlanData();
     loadTestCaseData();
   }, []);
 
@@ -76,8 +90,8 @@ export default function ProjectComponent() {
           setActiveItem(data as TestCase);
           setItemForm({
             name: data.name,
-						preCondition: data.preCondition,
-						postCondition: data.postCondition,
+            preCondition: data.preCondition,
+            postCondition: data.postCondition,
             testPlanId: data.testPlanId,
           });
           setDialogState({ visible: true, state: "edit" });
@@ -126,6 +140,42 @@ export default function ProjectComponent() {
             />
             <label htmlFor="name">Имя тест-кейса</label>
           </FloatLabel>
+          <FloatLabel>
+            <InputText
+              id="preCondition"
+              value={itemForm.preCondition}
+              onChange={(e) =>
+                setItemForm({
+                  ...itemForm,
+                  preCondition: e.target.value,
+                })
+              }
+            />
+            <label htmlFor="preCondition">Предусловия</label>
+          </FloatLabel>
+          <FloatLabel>
+            <InputText
+              id="postCondition"
+              value={itemForm.postCondition}
+              onChange={(e) =>
+                setItemForm({
+                  ...itemForm,
+                  postCondition: e.target.value,
+                })
+              }
+            />
+            <label htmlFor="postCondition">Постусловия</label>
+          </FloatLabel>
+          <Dropdown
+            value={itemForm.testPlanId}
+            optionLabel="name"
+            optionValue="id"
+            onChange={(e: DropdownChangeEvent) =>
+              setItemForm({ ...itemForm, testPlanId: e.value })
+            }
+            options={testPlanList}
+            placeholder="Выбор Задачи"
+          />
         </div>
       </UpdateDialog>
     </div>

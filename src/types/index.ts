@@ -19,6 +19,7 @@ export interface TestPlan {
   taskKey: string;
   status: Status;
   projectId: number;
+  testCases?: string;
 }
 
 export interface TestCase {
