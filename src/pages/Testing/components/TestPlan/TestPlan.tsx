@@ -111,7 +111,7 @@ export default function ProjectComponent() {
         searchOptionList={searchOptionList}
         header="Управление тест-планами"
         headerButton={{
-          label: "Создать проект",
+          label: "Создать тест-план",
           action: () => {
             setItemForm({ name: "" });
             setDialogState({ visible: true, state: "create" });

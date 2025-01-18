@@ -1,4 +1,4 @@
-import { Step, TestCase } from '@/types'
+import { Status, Step, TestCase } from '@/types'
 import {privateInstance} from '.'
 import { TestCaseForm } from '@/pages/Testing/types'
 
@@ -23,3 +23,8 @@ export async function fetchConnectedSteps(testCaseId: number): Promise<Step[]> {
 	const response = await privateInstance.get(`/api/test-cases/${testCaseId}/steps`)
 	return response.data
 }
+
+export async function changeStepStatus(stepId: number, stepData: any, newStatus: Status) {
+	await privateInstance.patch(`/api/steps/${stepId}`, {...stepData, status: newStatus});
+}
+

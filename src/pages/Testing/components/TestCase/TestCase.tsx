@@ -84,7 +84,7 @@ export default function ProjectComponent() {
         searchOptionList={searchOptionList}
         header="Управление тест-кейсами"
         headerButton={{
-          label: "Создать проект",
+          label: "Создать тест-кейс",
           action: () => {
             setItemForm({ name: "", preCondition: "", postCondition: "" });
             setDialogState({ visible: true, state: "create" });

@@ -7,6 +7,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Checkbox } from "primereact/checkbox";
 import { MultiStateCheckbox } from "primereact/multistatecheckbox";
+import { changeStepStatus } from "@/api/testCase";
 
 interface Props {
   data: DataWithName;
@@ -83,13 +84,12 @@ export default function ItemContainer({ data, updateItem, step }: Props) {
               <Column rowReorder style={{ width: "3rem" }} />
               <Column
                 style={{ width: "3rem" }}
-                body={
+                body={(data) => 
                   <MultiStateCheckbox
-                    value={value}
-                    onChange={(e) => setValue(e.value)}
+                    value={data.status}
+                    onChange={(e) => changeStepStatus(data.id, data, e.value)}
                     options={options}
                     optionValue="value"
-                    className={value === 'FAILED' ? 'p-invalid' : ''}
                   />
                 }
               />
