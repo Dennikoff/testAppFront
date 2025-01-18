@@ -74,7 +74,6 @@ export default function ProjectComponent() {
     const testPlanList = await fetchTestPlan()
     for(let index in testPlanList) {
       const data = await fetchConnectedTestCases(testPlanList[index].id)
-      console.log(data);
       const testCasesList = data.reduce((acc, value) => {
         return acc =  `${acc}${value.id} `;
       }, '')
@@ -88,6 +87,9 @@ export default function ProjectComponent() {
   useEffect(() => {
     if (asuzProjectId) {
       loadTmTaskList(asuzProjectId);
+      if(dialogState.visible) {
+        setItemForm({ ...itemForm, taskId: undefined })
+      }
     }
   }, [asuzProjectId]);
 
@@ -96,6 +98,10 @@ export default function ProjectComponent() {
     loadProjectOptions();
     loadTmProjectList();
   }, []);
+
+  useEffect(() => {
+    setAsuzProjectId(undefined);
+  }, [dialogState.visible])
 
   return (
     <div className={`page-container ${styles.page}`}>
@@ -120,8 +126,9 @@ export default function ProjectComponent() {
           setActiveItem(data as TestPlan);
           setItemForm({
             name: data.name,
-            taskKey: data.taskKey,
+            taskId: data.taskId,
             projectId: data.projectId,
+            
           });
           setDialogState({ visible: true, state: "edit" });
         }}
@@ -188,12 +195,12 @@ export default function ProjectComponent() {
             placeholder="Выбор проект АСУЗ"
           />
           <Dropdown
-            value={itemForm.taskKey}
+            value={itemForm.taskId}
             disabled={!asuzProjectId}
             optionLabel="title"
             optionValue="id"
             onChange={(e: DropdownChangeEvent) =>
-              setItemForm({ ...itemForm, taskKey: e.value })
+              setItemForm({ ...itemForm, taskId: e.value })
             }
             options={tmTaskList}
             placeholder="Выбор Задачи"

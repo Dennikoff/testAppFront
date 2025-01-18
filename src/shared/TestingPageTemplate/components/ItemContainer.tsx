@@ -1,15 +1,19 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { DataWithName } from "../types";
 import styles from "./ItemContainer.module.scss";
 import { Button } from "primereact/button";
-
+import { Dialog } from "primereact/dialog";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
 interface Props {
   data: DataWithName;
-  updateItem: (data: DataWithName) => void
+  updateItem: (data: DataWithName) => void;
+  step?: boolean;
 }
 
-export default function ItemContainer({ data, updateItem }: Props) {
+export default function ItemContainer({ data, updateItem, step }: Props) {
+  const [dialogVisible, setDialogVisible] = useState(false);
   const properties = useMemo(() => {
     const tempMas = [];
     for (let property in data) {
@@ -18,6 +22,18 @@ export default function ItemContainer({ data, updateItem }: Props) {
     }
     return tempMas;
   }, [data]);
+
+  const columns = [
+    { field: "ordering", header: "Номер" },
+    { field: "action", header: "Действие" },
+    { field: "expectedResult", header: "Ожидаемый результат" },
+    { field: "status", header: "Статус" },
+    { field: "testCaseId", header: "Тест-кейс" },
+  ];
+
+  const dynamicColumns = columns.map((col) => {
+    return <Column key={col.field} columnKey={col.field} field={col.field} header={col.header} />;
+  });
 
   return (
     <div className={styles.itemWrapper}>
@@ -29,7 +45,38 @@ export default function ItemContainer({ data, updateItem }: Props) {
         ))}
       </ul>
       <div className={styles.buttonWrapper}>
-        <Button label="Редактировать" size="small" className={styles.button} onClick={() => updateItem(data)}/>
+        {step && (
+          <Button
+            outlined
+            label="Шаги"
+            size="small"
+            onClick={() => setDialogVisible(true)}
+          />
+        )}
+        {step && (
+          <Dialog
+            visible={dialogVisible}
+            onHide={() => setDialogVisible(false)}
+            style={{ width: "70vw" }}
+          >
+            <DataTable
+              value={data.stepList}
+              reorderableColumns
+              reorderableRows
+              onRowReorder={(e) => console.log(e.value)}
+              tableStyle={{ minWidth: "50rem" }}
+            >
+              <Column rowReorder style={{ width: "3rem" }} />
+              {dynamicColumns}
+            </DataTable>
+          </Dialog>
+        )}
+        <Button
+          label="Редактировать"
+          size="small"
+          className={styles.button}
+          onClick={() => updateItem(data)}
+        />
       </div>
     </div>
   );

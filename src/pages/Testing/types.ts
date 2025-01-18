@@ -3,7 +3,7 @@ import { Project, TestCase, TestPlan } from "@/types";
 export type ProjectForm = Omit<Project, 'id'>
 
 export interface TestPlanForm extends Pick<TestPlan, 'name'> {
-	taskKey?: TestPlan['taskKey'];
+	taskId?: TestPlan['taskId'];
 	projectId?: TestPlan['projectId'];
 }
 

@@ -16,7 +16,7 @@ export interface Project {
 export interface TestPlan {
   id: number;
   name: string;
-  taskKey: string;
+  taskId: number;
   status: Status;
   projectId: number;
   testCases?: string;
@@ -29,6 +29,7 @@ export interface TestCase {
   postCondition: string;
   status: Status;
   testPlanId: number;
+  stepList?: Step[];
 }
 
 export interface tmProject {
@@ -41,4 +42,14 @@ export interface tmTasks {
   key: string;
   title: string;
   taskState: string;
+}
+
+export interface Step {
+  id: number;
+  ordering: number;
+  action: string;
+  expectedResult: string;
+  actualResult: string | null;
+  status: Status;
+  testCaseId: number;
 }

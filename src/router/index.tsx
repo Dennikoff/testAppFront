@@ -29,7 +29,7 @@ const router = createBrowserRouter([
 			{
 				path: '',
 				id: "home",
-				element: <Redirect pathName="/registration-acc"/>,
+				element: <Redirect pathName={localStorage.getItem('role') === 'DIRECTOR' ? "/registration-acc" : "/testing"}/>,
 			},
 			{
 				path: '/login',
@@ -39,12 +39,12 @@ const router = createBrowserRouter([
 			{
 				path: '/registration-acc',
 				id: "account-registration",
-				element: <AcountRegistration />
+				element: localStorage.getItem('role') === 'DIRECTOR' ? <AcountRegistration /> :  <Redirect pathName="/testing"/>
 			},
 			{
 				path: '/administration',
 				id: "administration",
-				element: <Administration />,
+				element: localStorage.getItem('role') === 'DIRECTOR' ? <Administration /> :  <Redirect pathName="/testing"/>,
 				children: [
 					{
 						path: '',

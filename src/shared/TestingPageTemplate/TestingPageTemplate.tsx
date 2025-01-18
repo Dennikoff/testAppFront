@@ -18,7 +18,8 @@ interface TestingPageTemplateProps {
   setSearchOption: (value: SearchOption) => void;
   data: DataWithName[];
   loading: boolean;
-  updateItem: (data: DataWithName) => void
+  updateItem: (data: DataWithName) => void;
+  step?: boolean;
 }
 
 export interface SearchOption {
@@ -37,6 +38,7 @@ export function TestingPageTemplate({
   data,
   loading,
   updateItem,
+  step,
 }: TestingPageTemplateProps) {
 
   return (
@@ -80,6 +82,7 @@ export function TestingPageTemplate({
               <li key={val.name}>
                 <ItemContainer
                   data={val}
+                  step={step}
                   updateItem={updateItem}
                 />
               </li>

@@ -30,14 +30,17 @@ export default function Navigation() {
     {
       path: "/registration-acc",
       label: "Регистрация УЗ",
+      disable: localStorage.getItem('role') !== 'DIRECTOR',
     },
     {
       path: "/administration",
       label: "Администрирование",
+      disable: localStorage.getItem('role') !== 'DIRECTOR',
     },
     {
       path: "/testing",
       label: "Тестирование",
+      disable: false,
     },
   ];
 
@@ -64,8 +67,9 @@ export default function Navigation() {
             return (
               <li key={link.path}>
                 <NavLink
+                  
                   className={({ isActive }) =>
-                    `${isActive ? styles.active + " " : ""}${styles.navLink}`
+                    `${isActive ? styles.active + " " : ""}${styles.navLink} ${link.disable && styles.disabled}`
                   }
                   to={link.path}
                 >

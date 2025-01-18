@@ -17,11 +17,12 @@
 }
 
 .button {
-	margin-top: 1rem;
 	margin-left: auto;
 }
 
 .buttonWrapper {
+	margin-top: 1rem;
 	width: 100%;
 	display: flex;
+	justify-content: space-between;
 }

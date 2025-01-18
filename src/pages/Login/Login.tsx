@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import styles from "./Login.module.scss";
 import Steve from "@/static/assets/steve.png";
 import { InputText } from "primereact/inputtext";
@@ -21,7 +21,7 @@ export default function Login() {
     (e: FormEvent) => {
       e.preventDefault();
       console.log(loginForm);
-      login(loginForm).then(() => navigate('/')).catch(() => {
+      login(loginForm).then(() => navigate(0)).catch(() => {
         toast.current?.show({ severity: 'error', summary: 'Ошибка', detail: 'Неверный логин или пароль' });
       });
     },

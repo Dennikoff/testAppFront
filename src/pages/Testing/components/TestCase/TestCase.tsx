@@ -14,6 +14,7 @@ import { TestCaseForm } from "../../types";
 import {
   createTestCase,
   deleteTestCase,
+  fetchConnectedSteps,
   fetchTestCase,
   updateTestCase,
 } from "@/api/testCase";
@@ -56,15 +57,20 @@ export default function ProjectComponent() {
     fetchTestPlan().then((data) => setTestPlanList(data));
   }
 
-  function loadTestCaseData() {
+  async function loadTestCaseData() {
     setLoading(true);
-    fetchTestCase()
-      .then((data) => setTestCaseList(data))
-      .finally(() => setLoading(false));
+    const testCaseList = await fetchTestCase();
+    for (let index in testCaseList) {
+      const data = await fetchConnectedSteps(testCaseList[index].id);
+			console.log(data);
+      testCaseList[index].stepList = data;
+    }
+    setTestCaseList(testCaseList);
+    setLoading(false);
   }
 
   useEffect(() => {
-		loadTestPlanData();
+    loadTestPlanData();
     loadTestCaseData();
   }, []);
 
@@ -96,6 +102,7 @@ export default function ProjectComponent() {
           });
           setDialogState({ visible: true, state: "edit" });
         }}
+        step
       />
       <UpdateDialog
         dialogState={dialogState}
@@ -122,6 +129,7 @@ export default function ProjectComponent() {
           loadTestCaseData();
         }}
         onUpdate={async () => {
+          console.log(itemForm);
           await updateTestCase(itemForm, activeItem!.id);
           loadTestCaseData();
         }}
