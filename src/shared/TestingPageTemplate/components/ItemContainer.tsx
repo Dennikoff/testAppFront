@@ -5,7 +5,6 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Checkbox } from "primereact/checkbox";
 import { MultiStateCheckbox } from "primereact/multistatecheckbox";
 import { changeStepStatus } from "@/api/testCase";
 
@@ -16,7 +15,6 @@ interface Props {
 }
 
 export default function ItemContainer({ data, updateItem, step }: Props) {
-  const [value, setValue] = useState("public");
   const options = [
     { value: "SUCCESS", icon: "pi pi-check" },
     { value: "FAILED", icon: "pi pi-times" },
