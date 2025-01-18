@@ -20,6 +20,7 @@ interface TestingPageTemplateProps {
   loading: boolean;
   updateItem: (data: DataWithName) => void;
   step?: boolean;
+  load?: any;
 }
 
 export interface SearchOption {
@@ -39,6 +40,7 @@ export function TestingPageTemplate({
   loading,
   updateItem,
   step,
+  load,
 }: TestingPageTemplateProps) {
 
   return (
@@ -83,6 +85,7 @@ export function TestingPageTemplate({
                 <ItemContainer
                   data={val}
                   step={step}
+                  load={load}
                   updateItem={updateItem}
                 />
               </li>

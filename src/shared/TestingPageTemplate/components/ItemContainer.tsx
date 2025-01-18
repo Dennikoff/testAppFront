@@ -12,12 +12,13 @@ interface Props {
   data: DataWithName;
   updateItem: (data: DataWithName) => void;
   step?: boolean;
+  load: any;
 }
 
-export default function ItemContainer({ data, updateItem, step }: Props) {
+export default function ItemContainer({ data, updateItem, step, load }: Props) {
   const options = [
     { value: "SUCCESS", icon: "pi pi-check" },
-    { value: "FAILED", icon: "pi pi-times" },
+    { value: "FAIL", icon: "pi pi-times" },
   ];
   const [dialogVisible, setDialogVisible] = useState(false);
   const properties = useMemo(() => {
@@ -85,7 +86,7 @@ export default function ItemContainer({ data, updateItem, step }: Props) {
                 body={(data) => 
                   <MultiStateCheckbox
                     value={data.status}
-                    onChange={(e) => changeStepStatus(data.id, data, e.value)}
+                    onChange={(e) => {changeStepStatus(data.id, data, e.value); load()}}
                     options={options}
                     optionValue="value"
                   />

@@ -105,6 +105,7 @@ export default function ProjectComponent() {
           setDialogState({ visible: true, state: "edit" });
         }}
         step
+        load={loadTestCaseData}
       />
       <UpdateDialog
         dialogState={dialogState}
