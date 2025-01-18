@@ -12,7 +12,6 @@ import { DataWithName } from "@/shared/TestingPageTemplate/types";
 
 import { TestCaseForm } from "../../types";
 import { createTestCase, deleteTestCase, fetchTestCase, updateTestCase } from "@/api/testCase";
-import { Dropdown } from "primereact/dropdown";
 
 export default function ProjectComponent() {
   const [search, setSearch] = useState<string>("");
@@ -61,7 +60,7 @@ export default function ProjectComponent() {
         searchOption={searchOption}
         setSearchOption={setSearchOption}
         searchOptionList={searchOptionList}
-        header="Управление проектом"
+        header="Управление тест-кейсами"
         headerButton={{
           label: "Создать проект",
           action: () => {

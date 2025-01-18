@@ -2,7 +2,7 @@ import TestingPageTemplate from "@/shared/TestingPageTemplate/TestingPageTemplat
 import styles from "../../Testing.module.scss";
 import { useCallback, useEffect, useState } from "react";
 import { SearchOption } from "@/shared/TablePageTemplate/TablePageTemplate";
-import { TestPlan } from "@/types";
+import { TestPlan, tmProject, tmTasks } from "@/types";
 import UpdateDialog from "@/shared/UpdateDialog/UpdateDialog";
 import { DialogState } from "@/shared/UpdateDialog/types";
 import { confirmDialog } from "primereact/confirmdialog";
@@ -18,6 +18,7 @@ import {
 } from "@/api/testPlan";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { fetchProjects } from "@/api/project";
+import { fetchTmProjects, fetchTmTasks } from "@/api/taskManagement";
 
 export default function ProjectComponent() {
   const [search, setSearch] = useState<string>("");
@@ -37,6 +38,10 @@ export default function ProjectComponent() {
   ];
 
   const [projectOptionList, setProjectOptionList] = useState<ProjectOption[]>([]);
+  const [tmProjectList, setTmProjectList] = useState<tmProject[]>([]);
+  const [tmTaskList, setTmTaskList] = useState<tmTasks[]>([]);
+
+  const [asuzProjectId, setAsuzProjectId] = useState<number>();
 
   const [searchOption, setSearchOption] = useState<SearchOption | null>(null);
 
@@ -49,11 +54,19 @@ export default function ProjectComponent() {
     setDialogState({ visible: false, state: "create" });
   }, [activeItem, testPlanList]);
 
+  function loadTmTaskList(projectId: number) {
+    fetchTmTasks(projectId)
+      .then((data) => setTmTaskList(data))
+  }
+  
+  function loadTmProjectList() {
+    fetchTmProjects()
+      .then((data) => setTmProjectList(data))
+  }
+  
   function loadProjectOptions() {
-    setLoading(true);
     fetchProjects()
       .then((data) => setProjectOptionList(data))
-      .finally(() => setLoading(false));
   }
 
   function loadTestPlanData() {
@@ -64,8 +77,15 @@ export default function ProjectComponent() {
   }
 
   useEffect(() => {
+    if(asuzProjectId) {
+      loadTmTaskList(asuzProjectId);
+    }
+  }, [asuzProjectId])
+
+  useEffect(() => {
     loadTestPlanData();
     loadProjectOptions();
+    loadTmProjectList();
   }, []);
 
   return (
@@ -74,7 +94,7 @@ export default function ProjectComponent() {
         searchOption={searchOption}
         setSearchOption={setSearchOption}
         searchOptionList={searchOptionList}
-        header="Управление проектом"
+        header="Управление тест-планами"
         headerButton={{
           label: "Создать проект",
           action: () => {
@@ -150,6 +170,28 @@ export default function ProjectComponent() {
             options={projectOptionList}
             placeholder="Выбор проекта"
           />
+          <Dropdown
+            value={asuzProjectId}
+            optionLabel="title"
+            optionValue="id"
+            onChange={(e: DropdownChangeEvent) =>
+              setAsuzProjectId(e.value)
+            }
+            options={tmProjectList}
+            placeholder="Выбор проект АСУЗ"
+          />
+          <Dropdown
+            value={itemForm.taskKey}
+            disabled={!asuzProjectId}
+            optionLabel="title"
+            optionValue="id"
+            onChange={(e: DropdownChangeEvent) =>
+              setItemForm({ ...itemForm, taskKey: e.value })
+            }
+            options={tmTaskList}
+            placeholder="Выбор Задачи"
+          />
+          
         </div>
       </UpdateDialog>
     </div>

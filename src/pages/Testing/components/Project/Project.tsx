@@ -62,7 +62,7 @@ export default function ProjectComponent() {
         searchOption={searchOption}
         setSearchOption={setSearchOption}
         searchOptionList={searchOptionList}
-        header="Управление проектом"
+        header="Управление проектами"
         headerButton={{
           label: "Создать проект",
           action: () => {

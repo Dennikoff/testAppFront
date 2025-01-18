@@ -12,3 +12,9 @@
 .page {
 	height: 100%;
 }
+
+.formFields {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}

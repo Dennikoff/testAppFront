@@ -29,3 +29,15 @@ export interface TestCase {
   status: Status;
   testPlanId: number;
 }
+
+export interface tmProject {
+  id: number;
+  title: string;
+}
+
+export interface tmTasks {
+  id: number;
+  key: string;
+  title: string;
+  taskState: string;
+}
